@@ -1,0 +1,239 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>Go语言入门11—并发 | jrlee的个人网站</title><meta name="author" content="jrlee"><meta name="copyright" content="jrlee"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="goroutinegoroutine（协程）是go语言中独有的一种用于并发编程的机制，在Java或C++中，如果需要实现并发编程，通常需要我们自己维护一个线程池，然后将需要并发的内容包装成一个个的任务放到线程池中去执行，但是在go语言中就不一样，goroutine是由go的运行时调度和管理的。go程序会智能地将 goroutine 中的任务合理地分配给每个CPU去执行，不需要编程人员操心任务调度等">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Go语言入门11—并发">
+<meta property="og:url" content="http://jrlee1204.github.io/post/e2f2e302.html">
+<meta property="og:site_name" content="jrlee的个人网站">
+<meta property="og:description" content="goroutinegoroutine（协程）是go语言中独有的一种用于并发编程的机制，在Java或C++中，如果需要实现并发编程，通常需要我们自己维护一个线程池，然后将需要并发的内容包装成一个个的任务放到线程池中去执行，但是在go语言中就不一样，goroutine是由go的运行时调度和管理的。go程序会智能地将 goroutine 中的任务合理地分配给每个CPU去执行，不需要编程人员操心任务调度等">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lee-oss-dev.oss-cn-shenzhen.aliyuncs.com/lee-page/20227/Snipaste_2022-10-20_10-19-16.png">
+<meta property="article:published_time" content="2023-02-22T03:02:56.000Z">
+<meta property="article:modified_time" content="2023-02-22T03:31:26.727Z">
+<meta property="article:author" content="jrlee">
+<meta property="article:tag" content="Go语言">
+<meta property="article:tag" content="后端开发">
+<meta property="article:tag" content="云原生">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lee-oss-dev.oss-cn-shenzhen.aliyuncs.com/lee-page/20227/Snipaste_2022-10-20_10-19-16.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://jrlee1204.github.io/post/e2f2e302.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Go语言入门11—并发',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-02-22 11:31:26'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">13</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">3</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">1</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url('https://lee-oss-dev.oss-cn-shenzhen.aliyuncs.com/lee-page/20227/Snipaste_2022-10-20_10-19-16.png')"><nav id="nav"><span id="blog-info"><a href="/" title="jrlee的个人网站"><span class="site-name">jrlee的个人网站</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Go语言入门11—并发</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-02-22T03:02:56.000Z" title="发表于 2023-02-22 11:02:56">2023-02-22</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-02-22T03:31:26.727Z" title="更新于 2023-02-22 11:31:26">2023-02-22</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Go%E8%AF%AD%E8%A8%80/">Go语言</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Go语言入门11—并发"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="goroutine"><a href="#goroutine" class="headerlink" title="goroutine"></a>goroutine</h1><p>goroutine（协程）是go语言中独有的一种用于并发编程的机制，在Java或C++中，如果需要实现并发编程，通常需要我们自己维护一个线程池，然后将需要并发的内容包装成一个个的任务放到线程池中去执行，但是在go语言中就不一样，goroutine是由go的运行时调度和管理的。go程序会智能地将 goroutine 中的任务合理地分配给每个CPU去执行，不需要编程人员操心任务调度等问题。</p>
+<h1 id="使用goroutine"><a href="#使用goroutine" class="headerlink" title="使用goroutine"></a>使用goroutine</h1><p>当某个任务需要并发执行时，我们只需要将并发执行的任务包装成一个函数，开启一个goroutine去执行该函数即可，开启goroutine就是在函数调用前加上<code>go</code>关键字。</p>
+<p>代码示例：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;fmt&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">  testGoroutine()</span><br><span class="line">  fmt.Println(<span class="string">&quot;test main...&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">testGoroutine</span><span class="params">()</span></span> &#123;</span><br><span class="line">  fmt.Println(<span class="string">&quot;test goroutine...&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上述代码是没有开启goroutine进行并发的代码，所以在代码运行时，<code>testGoroutine</code>方法和<code>main</code>方法串行执行，依次打印<code>test goroutine...和test main...</code>。</p>
+<p>接下来在testGoroutine函数调用之前加上关键字<code>go</code>。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">go</span> testGoroutine()</span><br></pre></td></tr></table></figure>
+
+<p>运行结果：</p>
+<p><img src="https://lee-oss-dev.oss-cn-shenzhen.aliyuncs.com/note-images/202302221106599.png" alt="img"></p>
+<p>在<code>testGoroutine</code>函数调用前加上<code>go</code>关键字后反而只打印出了<code>test main...</code>，这是因为程序在启动时首先会为main函数创建一个默认的goroutine，当main函数执行完的时候该goroutine也就结束了，所以在main函数中启动的goroutine也就会随着main函数结束而一同结束。</p>
+<p>要解决这个只需要在main函数中加上<code>time.Sleep</code>，让main函数等一会，给testGoroutine充分的时间执行即可。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">  <span class="keyword">go</span> testGoroutine()</span><br><span class="line">  fmt.Println(<span class="string">&quot;test main...&quot;</span>)</span><br><span class="line">  time.Sleep(time.Second)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行结果：</p>
+<p><img src="https://lee-oss-dev.oss-cn-shenzhen.aliyuncs.com/note-images/202302221106621.png" alt="img"></p>
+<p>这样就会先打印出<code>test main...</code>，然后再打印<code>test goroutine...</code>，因为通过关键字go启动testGoroutine函数时，创建goroutine会花费一定的时间，但是main是在已经创建好的goroutine中直接执行的，所以就会先打印出<code>test main...</code>。</p>
+<p>使用go语言并发编程就是这么简单，同时还可以启动多个goroutine。</p>
+<p>代码示例：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">  <span class="string">&quot;fmt&quot;</span></span><br><span class="line">  <span class="string">&quot;time&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">  <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">10</span>; i++ &#123;</span><br><span class="line">    <span class="keyword">go</span> testGoroutine(i)</span><br><span class="line">  &#125;</span><br><span class="line">  fmt.Println(<span class="string">&quot;test main...&quot;</span>)</span><br><span class="line">  time.Sleep(time.Second)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">testGoroutine</span><span class="params">(i <span class="type">int</span>)</span></span> &#123;</span><br><span class="line">  fmt.Println(<span class="string">&quot;test goroutine...&quot;</span>, i)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>代码通过 for 循环启动10个 goroutine ，分别在每个 goroutine 中都打印传入的变量 i 。</p>
+<p>运行结果：</p>
+<p><img src="https://lee-oss-dev.oss-cn-shenzhen.aliyuncs.com/note-images/202302221106658.png" alt="img"></p>
+<p>每一次打印的数字的顺序都应该是不一样的，因为一共启动了10个 goroutine ，这10个 goroutine 是并发执行的，而且 goroutine 是随机调度的。</p>
+<p>go 关键字除了使用在调用函数之前，还可以将 go 关键字和函数的声明写到一起。</p>
+<p>代码示例：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">  <span class="string">&quot;fmt&quot;</span></span><br><span class="line">  <span class="string">&quot;time&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">  <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">10</span>; i++ &#123;</span><br><span class="line">    <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">(i <span class="type">int</span>)</span></span> &#123;</span><br><span class="line">      fmt.Println(<span class="string">&quot;test goroutine...&quot;</span>, i)</span><br><span class="line">    &#125;(i)</span><br><span class="line">  &#125;</span><br><span class="line">  fmt.Println(<span class="string">&quot;test main...&quot;</span>)</span><br><span class="line">  time.Sleep(time.Second)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用该写法同样可以正常启动10个goroutine并发，代码正常运行。</p>
+<h1 id="runtime包"><a href="#runtime包" class="headerlink" title="runtime包"></a>runtime包</h1><p>runtime 包是 go 语言并发编程中很重要的一个包，这个包里面包含了很多系统资源、并发操作的函数。</p>
+<h2 id="系统资源获取"><a href="#系统资源获取" class="headerlink" title="系统资源获取"></a>系统资源获取</h2><ul>
+<li>runtime.GOOS：获取操作系统类型</li>
+<li>runtime.GOARCH：获取操作系统内核</li>
+<li>runtime.NumCPU()：获取操作系统核心数</li>
+<li>runtime.NumGoroutine()：获取当前正在执行和排队的任务总数</li>
+</ul>
+<p>代码示例：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">  fmt.Println(<span class="string">&quot;操作系统：&quot;</span>,runtime.GOOS)</span><br><span class="line">  fmt.Println(<span class="string">&quot;操作系统内核：&quot;</span>,runtime.GOARCH)</span><br><span class="line">  fmt.Println(<span class="string">&quot;操作系统核心数：&quot;</span>,runtime.NumCPU())</span><br><span class="line">  fmt.Println(<span class="string">&quot;任务总数：&quot;</span>,runtime.NumGoroutine())</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行结果：</p>
+<p><img src="https://lee-oss-dev.oss-cn-shenzhen.aliyuncs.com/note-images/202302221106691.png" alt="img"></p>
+<h2 id="runtime-Gosched"><a href="#runtime-Gosched" class="headerlink" title="runtime.Gosched()"></a>runtime.Gosched()</h2><p>runtime.Gosched()意味着当前goroutine让出CPU，供其它的<code>goroutine</code>获得执行的机会。同时，当前的<code>goroutine</code>也会在未来的某个时间点继续运行，假设有一下代码：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">  <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">2</span>; i++ &#123;</span><br><span class="line">      fmt.Println(<span class="string">&quot;test&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;()</span><br><span class="line">  fmt.Println(<span class="string">&quot;main&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在这个代码中，大部分情况下都是会打印出 main ，然后程序就正常结束了，具体原因上面有说到，可以通过 time.Sleep(time.Second) 来控制 main 函数等待子协程执行完毕，同时我们还可以使用 runtime.Gosched() 让 main 主协程让出CPU，供子协程获得执行的机会。</p>
+<p>代码示例：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">  <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">2</span>; i++ &#123;</span><br><span class="line">      fmt.Println(<span class="string">&quot;test&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;()</span><br><span class="line">  runtime.Gosched()    <span class="comment">// main 协程让出CPU，供子协程获得执行的机会</span></span><br><span class="line">  fmt.Println(<span class="string">&quot;main&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行结果：</p>
+<p><img src="https://lee-oss-dev.oss-cn-shenzhen.aliyuncs.com/note-images/202302221106714.png" alt="img"></p>
+<p>当程序运行到 runtime.Gosched() 时 main 会让出CPU，所以就会先打印出两个 test 然后再打印出 main 。</p>
+<h2 id="runtime-Goexit"><a href="#runtime-Goexit" class="headerlink" title="runtime.Goexit()"></a>runtime.Goexit()</h2><p>结束当前<code>goroutine</code>，其他的<code>goroutine</code>不受影响，主程序也一样继续运行，但是在结束goroutine时，会先执行该goroutine中的defer语句。</p>
+<p>代码示例：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="comment">// goroutine A</span></span><br><span class="line">  <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">defer</span> fmt.Println(<span class="string">&quot;defer&quot;</span>)</span><br><span class="line">    runtime.Goexit()</span><br><span class="line">    fmt.Println(<span class="string">&quot;goroutine A&quot;</span>)</span><br><span class="line">  &#125;()</span><br><span class="line">    <span class="comment">// goroutine B</span></span><br><span class="line">  <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">    fmt.Println(<span class="string">&quot;goroutine B&quot;</span>)</span><br><span class="line">  &#125;()</span><br><span class="line">  time.Sleep(time.Second)</span><br><span class="line">  fmt.Println(<span class="string">&quot;main&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行结果：</p>
+<p><img src="https://lee-oss-dev.oss-cn-shenzhen.aliyuncs.com/note-images/202302221106756.png" alt="img"></p>
+<p>上述代码所示，一共启动了两个 goroutine ，在 goroutine A 中调用的 runtime.Goexit() ，所以 goroutine A 会退出，但是在退出之前会先执行 defer 语句的内容，结束语句之后的打印语句就不会再执行。虽然 goroutine A 退出了，但是 goroutine B 和 main 主协程都不会受到影响。</p>
+<h2 id="runtime-GOMAXPROCS"><a href="#runtime-GOMAXPROCS" class="headerlink" title="runtime.GOMAXPROCS"></a>runtime.GOMAXPROCS</h2><p>runtime.GOMAXPROCS 指定使用多少个操作系统线程来执行当前的 go 语言程序，在 go1.5 之前默认使用的单核执行，在 go1.5 之后，默认使用的当前系统的 CPU 核心数，例如当前系统是 8 核心，则就会将代码同时调度到 8 个操作系统线程上执行。</p>
+<p>使用一个线程：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">  runtime.GOMAXPROCS(<span class="number">1</span>)</span><br><span class="line">  <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">10</span>; i++ &#123;</span><br><span class="line">      fmt.Println(<span class="string">&quot;线程1：&quot;</span>, i)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;()</span><br><span class="line"></span><br><span class="line">  <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">10</span>; i++ &#123;</span><br><span class="line">      fmt.Println(<span class="string">&quot;线程2：&quot;</span>, i)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;()</span><br><span class="line"></span><br><span class="line">  time.Sleep(time.Second)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当把 GOMAXPROCS 设置成 1 时，在代码中同时启动两个 goroutine ，则系统会先将一个任务执行完成之后才会执行第二个任务，所以当前程序打印的结果中，<strong>永远都是一个线程从 0 打印到 9，然后再才打印另外一个线程。</strong>（无论尝试多少次都是这样）</p>
+<p>运行结果：</p>
+<p><img src="https://lee-oss-dev.oss-cn-shenzhen.aliyuncs.com/note-images/202302221106766.png" alt="img"></p>
+<p>使用默认线程数（ go 版本为 1.17 所以默认为操作系统核心数）</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">  <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">10</span>; i++ &#123;</span><br><span class="line">      fmt.Println(<span class="string">&quot;线程1：&quot;</span>, i)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;()</span><br><span class="line"></span><br><span class="line">  <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">10</span>; i++ &#123;</span><br><span class="line">      fmt.Println(<span class="string">&quot;线程2：&quot;</span>, i)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;()</span><br><span class="line"></span><br><span class="line">  time.Sleep(time.Second)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>由于没有设置 GOMAXPROCS ，所以使用了默认的线程数，也就是当前系统的核心数，这样就会将代码调度到多个操作系统线程上执行，和上面不一样的是如果尝试执行多次，<strong>就会出现线程1和线程2交替打印的情况。</strong></p>
+<p>运行结果：</p>
+<p><img src="https://lee-oss-dev.oss-cn-shenzhen.aliyuncs.com/note-images/202302221106822.png" alt="img"></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://jrlee1204.github.io">jrlee</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://jrlee1204.github.io/post/e2f2e302.html">http://jrlee1204.github.io/post/e2f2e302.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://jrlee1204.github.io" target="_blank">jrlee的个人网站</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Go%E8%AF%AD%E8%A8%80/">Go语言</a><a class="post-meta__tags" href="/tags/%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91/">后端开发</a><a class="post-meta__tags" href="/tags/%E4%BA%91%E5%8E%9F%E7%94%9F/">云原生</a></div><div class="post_share"><div class="social-share" data-image="https://lee-oss-dev.oss-cn-shenzhen.aliyuncs.com/lee-page/20227/Snipaste_2022-10-20_10-19-16.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/post/c56c12b3.html" title="Go语言入门12—Channel"><img class="cover" src="https://lee-oss-dev.oss-cn-shenzhen.aliyuncs.com/lee-page/20227/Snipaste_2022-10-20_10-19-16.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Go语言入门12—Channel</div></div></a></div><div class="next-post pull-right"><a href="/post/682c50e2.html" title="Go语言入门10—异常"><img class="cover" src="https://lee-oss-dev.oss-cn-shenzhen.aliyuncs.com/lee-page/20227/Snipaste_2022-10-20_10-19-16.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Go语言入门10—异常</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/post/64059a31.html" title="Go语言入门02—运算符"><img class="cover" src="https://lee-oss-dev.oss-cn-shenzhen.aliyuncs.com/lee-page/20227/Snipaste_2022-10-20_10-19-16.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-02-22</div><div class="title">Go语言入门02—运算符</div></div></a></div><div><a href="/post/2a42253.html" title="Go语言入门01—数据"><img class="cover" src="https://lee-oss-dev.oss-cn-shenzhen.aliyuncs.com/lee-page/20227/Snipaste_2022-10-20_10-19-16.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-02-21</div><div class="title">Go语言入门01—数据</div></div></a></div><div><a href="/post/86b8049b.html" title="Go语言入门04—数组切片"><img class="cover" src="https://lee-oss-dev.oss-cn-shenzhen.aliyuncs.com/lee-page/20227/Snipaste_2022-10-20_10-19-16.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-02-22</div><div class="title">Go语言入门04—数组切片</div></div></a></div><div><a href="/post/f6b2f281.html" title="Go语言入门06—函数"><img class="cover" src="https://lee-oss-dev.oss-cn-shenzhen.aliyuncs.com/lee-page/20227/Snipaste_2022-10-20_10-19-16.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-02-22</div><div class="title">Go语言入门06—函数</div></div></a></div><div><a href="/post/33c92a33.html" title="Go语言入门08—Map"><img class="cover" src="https://lee-oss-dev.oss-cn-shenzhen.aliyuncs.com/lee-page/20227/Snipaste_2022-10-20_10-19-16.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-02-22</div><div class="title">Go语言入门08—Map</div></div></a></div><div><a href="/post/3ccc38ac.html" title="Go语言入门07—结构体"><img class="cover" src="https://lee-oss-dev.oss-cn-shenzhen.aliyuncs.com/lee-page/20227/Snipaste_2022-10-20_10-19-16.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-02-22</div><div class="title">Go语言入门07—结构体</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">jrlee</div><div class="author-info__description">个人博客,Golang,后端开发</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">13</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">3</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">1</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">公众号：良猿</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#goroutine"><span class="toc-number">1.</span> <span class="toc-text">goroutine</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8goroutine"><span class="toc-number">2.</span> <span class="toc-text">使用goroutine</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#runtime%E5%8C%85"><span class="toc-number">3.</span> <span class="toc-text">runtime包</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E8%B5%84%E6%BA%90%E8%8E%B7%E5%8F%96"><span class="toc-number">3.1.</span> <span class="toc-text">系统资源获取</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#runtime-Gosched"><span class="toc-number">3.2.</span> <span class="toc-text">runtime.Gosched()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#runtime-Goexit"><span class="toc-number">3.3.</span> <span class="toc-text">runtime.Goexit()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#runtime-GOMAXPROCS"><span class="toc-number">3.4.</span> <span class="toc-text">runtime.GOMAXPROCS</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/post/ece6b965.html" title="Go语言入门13—Select"><img src="https://lee-oss-dev.oss-cn-shenzhen.aliyuncs.com/lee-page/20227/Snipaste_2022-10-20_10-19-16.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Go语言入门13—Select"/></a><div class="content"><a class="title" href="/post/ece6b965.html" title="Go语言入门13—Select">Go语言入门13—Select</a><time datetime="2023-02-22T03:03:09.000Z" title="发表于 2023-02-22 11:03:09">2023-02-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/c56c12b3.html" title="Go语言入门12—Channel"><img src="https://lee-oss-dev.oss-cn-shenzhen.aliyuncs.com/lee-page/20227/Snipaste_2022-10-20_10-19-16.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Go语言入门12—Channel"/></a><div class="content"><a class="title" href="/post/c56c12b3.html" title="Go语言入门12—Channel">Go语言入门12—Channel</a><time datetime="2023-02-22T03:03:01.000Z" title="发表于 2023-02-22 11:03:01">2023-02-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/e2f2e302.html" title="Go语言入门11—并发"><img src="https://lee-oss-dev.oss-cn-shenzhen.aliyuncs.com/lee-page/20227/Snipaste_2022-10-20_10-19-16.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Go语言入门11—并发"/></a><div class="content"><a class="title" href="/post/e2f2e302.html" title="Go语言入门11—并发">Go语言入门11—并发</a><time datetime="2023-02-22T03:02:56.000Z" title="发表于 2023-02-22 11:02:56">2023-02-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/682c50e2.html" title="Go语言入门10—异常"><img src="https://lee-oss-dev.oss-cn-shenzhen.aliyuncs.com/lee-page/20227/Snipaste_2022-10-20_10-19-16.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Go语言入门10—异常"/></a><div class="content"><a class="title" href="/post/682c50e2.html" title="Go语言入门10—异常">Go语言入门10—异常</a><time datetime="2023-02-22T03:02:49.000Z" title="发表于 2023-02-22 11:02:49">2023-02-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/2f45c3ff.html" title="Go语言入门09—接口"><img src="https://lee-oss-dev.oss-cn-shenzhen.aliyuncs.com/lee-page/20227/Snipaste_2022-10-20_10-19-16.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Go语言入门09—接口"/></a><div class="content"><a class="title" href="/post/2f45c3ff.html" title="Go语言入门09—接口">Go语言入门09—接口</a><time datetime="2023-02-22T03:02:39.000Z" title="发表于 2023-02-22 11:02:39">2023-02-22</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2023 By jrlee</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
