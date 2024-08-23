@@ -19,26 +19,25 @@
   <meta name="author" content="jrlee">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Context是Go语言在1.7版本引入的，Context可以用来在goroutine之间传递上下文信息，通常可以用来进行超时控制，消息传递等，Go语言官方建议的将Context作为函数的第一个参数并不断地透传下去以实现在不同的goroutine之间传递上下文。">
+    <meta name="description" content="Go语言中有关于时间和日期的方法都在time包里面，Go语言的time包为开发者提供了一套全面而简洁的工具来处理时间相关的操作。包括解析和格式化时间字符串，计算时间差和时区转换等，time包时Go语言中处理时间和日期的核心组件。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Go语言Context如何使用">
-<meta property="og:url" content="http://example.com/2024/08/19/Go%E8%AF%AD%E8%A8%80Context%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:title" content="Go语言time包基础使用">
+<meta property="og:url" content="http://example.com/2024/08/23/Go%E8%AF%AD%E8%A8%80time%E5%8C%85%E5%9F%BA%E7%A1%80%E4%BD%BF%E7%94%A8/index.html">
 <meta property="og:site_name" content="jrlee&#39;s blog">
-<meta property="og:description" content="Context是Go语言在1.7版本引入的，Context可以用来在goroutine之间传递上下文信息，通常可以用来进行超时控制，消息传递等，Go语言官方建议的将Context作为函数的第一个参数并不断地透传下去以实现在不同的goroutine之间传递上下文。">
+<meta property="og:description" content="Go语言中有关于时间和日期的方法都在time包里面，Go语言的time包为开发者提供了一套全面而简洁的工具来处理时间相关的操作。包括解析和格式化时间字符串，计算时间差和时区转换等，time包时Go语言中处理时间和日期的核心组件。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2024-08-19T10:57:14.000Z">
-<meta property="article:modified_time" content="2024-08-19T10:59:16.369Z">
+<meta property="article:published_time" content="2024-08-23T11:16:36.000Z">
+<meta property="article:modified_time" content="2024-08-23T11:17:52.055Z">
 <meta property="article:author" content="jrlee">
 <meta property="article:tag" content="Go语言">
-<meta property="article:tag" content="Golang进阶">
-<meta property="article:tag" content="上下文">
+<meta property="article:tag" content="时间格式化">
 <meta name="twitter:card" content="summary_large_image">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>Go语言Context如何使用 - jrlee&#39;s blog</title>
+  <title>Go语言time包基础使用 - jrlee&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -217,7 +216,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Go语言Context如何使用"></span>
+            <span id="subtitle" data-typed-text="Go语言time包基础使用"></span>
           
         </div>
 
@@ -233,8 +232,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-08-19 18:57" pubdate>
-          2024年8月19日 晚上
+        <time datetime="2024-08-23 19:16" pubdate>
+          2024年8月23日 晚上
         </time>
       </span>
     
@@ -245,7 +244,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.1k 字
+          1.2k 字
         
       </span>
     
@@ -302,12 +301,12 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">Go语言Context如何使用</h1>
+            <h1 id="seo-header">Go语言time包基础使用</h1>
             
               <p id="updated-time" class="note note-info" style="">
                 
                   
-                    本文最后更新于 2024年8月19日 晚上
+                    本文最后更新于 2024年8月23日 晚上
                   
                 
               </p>
@@ -315,38 +314,36 @@
             
               <div class="markdown-body">
                 
-                <h1 id="Go语言Context如何使用"><a href="#Go语言Context如何使用" class="headerlink" title="Go语言Context如何使用"></a>Go语言Context如何使用</h1><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>相信大家在日常使用Go语言进行开发的时候一定会遇到下面这种代码，特别是在Web开发中使用了诸如Gin、Echo和Beego类似的开发框架。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">getUser</span><span class="hljs-params">(ctx context.Context, id <span class="hljs-type">int64</span>)</span></span>&#123;<br>  getUserById(ctx, id)<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">getUserById</span><span class="hljs-params">(ctx context.Context, id <span class="hljs-type">int64</span>)</span></span>&#123;<br>  ...<br>&#125;<br></code></pre></td></tr></table></figure>
-<p>能够从上面的代码中看出，每个方法的第一个参数都是<code>Context</code>。<br><code>Context</code>是Go语言在1.7版本引入的，<code>Context</code>可以用来在<code>goroutine</code>之间传递上下文信息，通常可以用来进行超时控制，消息传递等，Go语言官方建议的将<code>Context</code>作为函数的第一个参数并不断地透传下去以实现在不同的<code>goroutine</code>之间传递上下文。</p>
-<h2 id="Context的使用"><a href="#Context的使用" class="headerlink" title="Context的使用"></a>Context的使用</h2><p><code>context</code>包中提供了两种方式创建<code>Context</code>：</p>
+                <h2 id="time包"><a href="#time包" class="headerlink" title="time包"></a>time包</h2><p>Go语言中有关于时间和日期的方法都在time包里面，Go语言的time包为开发者提供了一套全面而简洁的工具来处理时间相关的操作。包括解析和格式化时间字符串，计算时间差和时区转换等，time包时Go语言中处理时间和日期的核心组件。</p>
+<h2 id="时间类型（Time）"><a href="#时间类型（Time）" class="headerlink" title="时间类型（Time）"></a>时间类型（Time）</h2><p>time包中的Time结构体表示的是时间类型，在Go语言中，我们可以使用time.Now()方法来获取当前的时间，该方法返回的就是Time类型，调用Time类型的方法就可以分别获取到当前时间的年月日时分秒等信息。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	now := time.Now()<br><br>	fmt.Println(now) <span class="hljs-comment">// 2024-07-23 19:36:03.4481196 +0800 CST m=+0.004232101</span><br><br>	fmt.Println(now.Year())   <span class="hljs-comment">// 2024</span><br>	fmt.Println(now.Month())  <span class="hljs-comment">// July</span><br>	fmt.Println(now.Day())    <span class="hljs-comment">// 23</span><br>	fmt.Println(now.Hour())   <span class="hljs-comment">// 19</span><br>	fmt.Println(now.Minute()) <span class="hljs-comment">// 36</span><br>	fmt.Println(now.Second()) <span class="hljs-comment">// 3</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="时间格式化"><a href="#时间格式化" class="headerlink" title="时间格式化"></a>时间格式化</h2><p>从上面的输出可以看到当前日期的输出后面还携带了有其他的消息，不是我们常用的格式，这个时候就可以使用Go语言的时间格式化功能，使用format方法并执行格式化模板，Go语言的格式化模版并不是常用的Y-m-d H:M:S，而是2006-01-02 15:04:05，记忆方法：200612345（相传这个时间为Go语言诞生时间，不知真假）。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	now := time.Now()<br>	fmt.Println(now.Format(<span class="hljs-string">&quot;2006-01-02 15:04:05&quot;</span>))    <span class="hljs-comment">// 2024-07-23 19:37:58</span><br>	fmt.Println(now.Format(<span class="hljs-string">&quot;2006-01-02 03:04:05 PM&quot;</span>)) <span class="hljs-comment">// 2024-07-23 07:41:20 PM</span><br>	fmt.Println(now.Format(<span class="hljs-string">&quot;2006/01/02 15:04&quot;</span>))       <span class="hljs-comment">// 2024/07/23 19:40</span><br>	fmt.Println(now.Format(<span class="hljs-string">&quot;15:04 2006/01/02&quot;</span>))       <span class="hljs-comment">// 19:40 2024/07/23</span><br>	fmt.Println(now.Format(<span class="hljs-string">&quot;2006/01/02&quot;</span>))             <span class="hljs-comment">// 2024/07/23</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<p>除了自己写格式化模版之外，Go语言已经内置了一部分模版可供选择，模版在format包里面，可以直接使用，源码如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">const</span> (<br>	Layout      = <span class="hljs-string">&quot;01/02 03:04:05PM &#x27;06 -0700&quot;</span> <span class="hljs-comment">// The reference time, in numerical order.</span><br>	ANSIC       = <span class="hljs-string">&quot;Mon Jan _2 15:04:05 2006&quot;</span><br>	UnixDate    = <span class="hljs-string">&quot;Mon Jan _2 15:04:05 MST 2006&quot;</span><br>	RubyDate    = <span class="hljs-string">&quot;Mon Jan 02 15:04:05 -0700 2006&quot;</span><br>	RFC822      = <span class="hljs-string">&quot;02 Jan 06 15:04 MST&quot;</span><br>	RFC822Z     = <span class="hljs-string">&quot;02 Jan 06 15:04 -0700&quot;</span> <span class="hljs-comment">// RFC822 with numeric zone</span><br>	RFC850      = <span class="hljs-string">&quot;Monday, 02-Jan-06 15:04:05 MST&quot;</span><br>	RFC1123     = <span class="hljs-string">&quot;Mon, 02 Jan 2006 15:04:05 MST&quot;</span><br>	RFC1123Z    = <span class="hljs-string">&quot;Mon, 02 Jan 2006 15:04:05 -0700&quot;</span> <span class="hljs-comment">// RFC1123 with numeric zone</span><br>	RFC3339     = <span class="hljs-string">&quot;2006-01-02T15:04:05Z07:00&quot;</span><br>	RFC3339Nano = <span class="hljs-string">&quot;2006-01-02T15:04:05.999999999Z07:00&quot;</span><br>	Kitchen     = <span class="hljs-string">&quot;3:04PM&quot;</span><br>	<span class="hljs-comment">// Handy time stamps.</span><br>	Stamp      = <span class="hljs-string">&quot;Jan _2 15:04:05&quot;</span><br>	StampMilli = <span class="hljs-string">&quot;Jan _2 15:04:05.000&quot;</span><br>	StampMicro = <span class="hljs-string">&quot;Jan _2 15:04:05.000000&quot;</span><br>	StampNano  = <span class="hljs-string">&quot;Jan _2 15:04:05.000000000&quot;</span><br>	DateTime   = <span class="hljs-string">&quot;2006-01-02 15:04:05&quot;</span><br>	DateOnly   = <span class="hljs-string">&quot;2006-01-02&quot;</span><br>	TimeOnly   = <span class="hljs-string">&quot;15:04:05&quot;</span><br>)<br></code></pre></td></tr></table></figure>
+<h2 id="时间戳"><a href="#时间戳" class="headerlink" title="时间戳"></a>时间戳</h2><p>时间戳是自1970年1月1日（08:00:00GMT）至当前时间的总毫秒数，也被称为Unix时间戳，在Go语言里面，可以获取四种级别的时间戳，分别是秒、毫秒、微秒和纳秒。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	now := time.Now()<br>	fmt.Println(now.Unix())      <span class="hljs-comment">// 1721735188</span><br>	fmt.Println(now.UnixMilli()) <span class="hljs-comment">// 1721735188504</span><br>	fmt.Println(now.UnixMicro()) <span class="hljs-comment">// 1721735188504566</span><br>	fmt.Println(now.UnixNano())  <span class="hljs-comment">// 1721735188504566800</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="时间间隔"><a href="#时间间隔" class="headerlink" title="时间间隔"></a>时间间隔</h2><p>在time包里面还定义了一个Duration类型，Duration表示时间间隔，例如可以直接使用time.Second表示1秒，time.Hour * 3表示3个小时，Duration源码定义如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">const</span> (<br>	Nanosecond  Duration = <span class="hljs-number">1</span><br>	Microsecond          = <span class="hljs-number">1000</span> * Nanosecond<br>	Millisecond          = <span class="hljs-number">1000</span> * Microsecond<br>	Second               = <span class="hljs-number">1000</span> * Millisecond<br>	Minute               = <span class="hljs-number">60</span> * Second<br>	Hour                 = <span class="hljs-number">60</span> * Minute<br>)<br></code></pre></td></tr></table></figure>
+<h2 id="时间操作"><a href="#时间操作" class="headerlink" title="时间操作"></a>时间操作</h2><p>在Go语言里面还可以非常简单的进行时间的比较以及计算</p>
+<h3 id="时间计算"><a href="#时间计算" class="headerlink" title="时间计算"></a>时间计算</h3><p>可以使用Add方法在当前时间的基础上加上指定的时间间隔。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	now := time.Now()<br>	fmt.Println(now)                    <span class="hljs-comment">// 2024-07-23 19:52:14.0840934 +0800 CST m=+0.004981601</span><br>	fmt.Println(now.Add(time.Hour * <span class="hljs-number">2</span>)) <span class="hljs-comment">// 2024-07-23 21:52:14.0840934 +0800 CST m=+7200.004981601</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="时间间隔-1"><a href="#时间间隔-1" class="headerlink" title="时间间隔"></a>时间间隔</h3><p>还可以使用Sub方法计算两个时间之间相隔了多长时间，</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	now := time.Now()<br>	fmt.Println(now.Sub(now.Add(time.Hour * <span class="hljs-number">-2</span>))) <span class="hljs-comment">// 2h0m0s</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="之前"><a href="#之前" class="headerlink" title="之前"></a>之前</h3><p>使用Before判断一个时间是否在另一个时间之前</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	now := time.Now()<br>	fmt.Println(now.Before(now.Add(time.Hour))) <span class="hljs-comment">// true</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="之后"><a href="#之后" class="headerlink" title="之后"></a>之后</h3><p>使用After判断一个时间是否在另一个时间之后</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	now := time.Now()<br>	fmt.Println(now.After(now.Add(time.Hour))) <span class="hljs-comment">// false</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="相同"><a href="#相同" class="headerlink" title="相同"></a>相同</h3><p>使用Equal判断两个时间是否相同</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	now := time.Now()<br>	fmt.Println(now.Equal(now.Add(time.Hour))) <span class="hljs-comment">// false</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="时间转换"><a href="#时间转换" class="headerlink" title="时间转换"></a>时间转换</h2><h3 id="字符串转时间"><a href="#字符串转时间" class="headerlink" title="字符串转时间"></a>字符串转时间</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	timeStr := <span class="hljs-string">&quot;2024-07-23 12:23:34&quot;</span><br>	time1, _ := time.Parse(time.DateTime, timeStr)<br>	fmt.Println(time1) <span class="hljs-comment">// 2024-07-23 12:23:34 +0000 UTC</span><br>	time2, _ := time.ParseInLocation(time.DateTime, timeStr, time.Local)<br>	fmt.Println(time2) <span class="hljs-comment">// 2024-07-23 12:23:34 +0800 CST</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<p>可以使用Parse和ParseInLocation将字符串时间转成Time类型的时间，两者的区别如下：</p>
 <ul>
-<li><code>context.Backgroud()</code></li>
-<li><code>context.TODO()</code></li>
+<li><code>time.Parse</code> 总是将时间解析为 UTC 时区</li>
+<li><code>time.ParseInLocation</code> 允许指定一个时区解析</li>
 </ul>
-<p>通过这两种方式都可以创建一个<code>Context</code>，而且两者之间没有区别，官方给出的定义是：</p>
-<ul>
-<li><code>context.Background</code> 是上下文的默认值，所有其他的上下文都应该从它衍生（Derived）出来；</li>
-<li><code>context.TODO</code> 应该只在不确定应该使用哪种上下文时使用；</li>
-</ul>
-<p>使用这两种方法创建出来的<code>Context</code>都是默认的<code>Context</code>，也可以称为父<code>Context</code>，不具备我们上面说到的消息传递，超时控制这些功能，需要实现这些功能就需要使用<code>context</code>包提供的另外几个创建<code>Context</code>的方法：</p>
-<ul>
-<li><code>context.WithCancel(parent Context)</code></li>
-<li><code>context.WithDeadline(parent Context, deadline time.Time)</code></li>
-<li><code>context.WithTimeout(parent Context, timeout time.Duration)</code></li>
-<li><code>context.WithValue(parent Context, key, val interface&#123;&#125;)</code></li>
-</ul>
-<h2 id="传递数据"><a href="#传递数据" class="headerlink" title="传递数据"></a>传递数据</h2><p>在日常的开发中，日志是必不可少的一部分，同时我们都希望在日志打印的时候能够携带一个<code>tranceID</code>，这样的话根据一个<code>tranceID</code>就可以关联出一个请求的所有日志，这个在Go语言中就可以使用<code>Context</code>的传递数据方式实现。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">const</span> Key = <span class="hljs-string">&quot;trance_id&quot;</span><br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	ctx := context.WithValue(context.Background(), Key, <span class="hljs-string">&quot;1001&quot;</span>)<br>	router(ctx)<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">router</span><span class="hljs-params">(ctx context.Context)</span></span> &#123;<br>	printLog(ctx, <span class="hljs-string">&quot;router方法的日志&quot;</span>)<br>	service(ctx)<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">service</span><span class="hljs-params">(ctx context.Context)</span></span> &#123;<br>	printLog(ctx, <span class="hljs-string">&quot;service方法的日志&quot;</span>)<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">printLog</span><span class="hljs-params">(ctx context.Context, msg <span class="hljs-type">string</span>)</span></span> &#123;<br>	fmt.Printf(<span class="hljs-string">&quot;%s | level=info | trance_id=%s | message=%s\n&quot;</span>, time.Now().Format(<span class="hljs-string">&quot;2006-01-02 15:04:05&quot;</span>), ctx.Value(Key), msg)<br>&#125;<br></code></pre></td></tr></table></figure>
-<p>上面的代码中通过<code>WithValue</code>方法创建了一个可以携带数据的<code>Context</code>，然后在方法调用链中将<code>Context</code>作为第一个参数一直传递，在每个方法中都可以通过<code>Value</code>取到最开始放进去的<code>tranceID</code>，最后打印结果如下：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-number">2024</span><span class="hljs-number">-07</span><span class="hljs-number">-18</span> <span class="hljs-number">19</span>:<span class="hljs-number">44</span>:<span class="hljs-number">24</span> | level=info | trance_id=<span class="hljs-number">1001</span> | message=router方法的日志<br><span class="hljs-number">2024</span><span class="hljs-number">-07</span><span class="hljs-number">-18</span> <span class="hljs-number">19</span>:<span class="hljs-number">44</span>:<span class="hljs-number">24</span> | level=info | trance_id=<span class="hljs-number">1001</span> | message=service方法的日志<br></code></pre></td></tr></table></figure>
-<h2 id="超时控制"><a href="#超时控制" class="headerlink" title="超时控制"></a>超时控制</h2><p>要使用<code>Context</code>实现超时控制可以使用<code>WithTimeout</code>或<code>WithDeadline</code>，通过这两个方法创建出来的<code>Context</code>都可以实现超时控制，两个方法的作用是一样的。同时两个方法都会返回一个<code>cancel</code>方法，通过调用这个方法可以提前取消，不需要等到传入的时间达到即可取消。<br>示例代码如下：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	ctx, cancelFunc := context.WithTimeout(context.Background(), <span class="hljs-number">3</span>*time.Second)<br>	<span class="hljs-keyword">defer</span> cancelFunc()<br>	test(ctx)<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">test</span><span class="hljs-params">(ctx context.Context)</span></span> &#123;<br>	<span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; i++ &#123;<br>		time.Sleep(<span class="hljs-number">1</span> * time.Second)<br>		<span class="hljs-keyword">select</span> &#123;<br>		<span class="hljs-keyword">case</span> &lt;-ctx.Done():<br>			fmt.Println(ctx.Err())<br>			<span class="hljs-keyword">return</span><br>		<span class="hljs-keyword">default</span>:<br>			fmt.Printf(<span class="hljs-string">&quot;test = %d\n&quot;</span>, i)<br>		&#125;<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-<p>上面的代码中通过<code>WithTimeout</code>创建了一个时间为<code>3</code>秒的<code>Context</code>，然后在<code>test</code>方法中进行循环，每隔<code>1</code>秒输出一个<code>test</code>语句，但是由于<code>Context</code>的超时设置的<code>3</code>秒，所以当<code>3</code>秒后<code>Context</code>就会自动取消，最后<code>test</code>的输出也就只有2行。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs go">test = <span class="hljs-number">0</span><br>test = <span class="hljs-number">1</span><br>context deadline exceeded<br></code></pre></td></tr></table></figure>
-<h2 id="WithCancel取消控制"><a href="#WithCancel取消控制" class="headerlink" title="WithCancel取消控制"></a>WithCancel取消控制</h2><p>在开发中有时候可能需要同时创建多个<code>goroutine</code>并行的去进行一些逻辑的处理，但是当主<code>goroutine</code>出现错误的时候，这时候我们就已经不需要其他的<code>goroutine</code>继续执行，这种情况我们就可以使用<code>WithCancel</code>创建一个可以取消的<code>Context</code>，将<code>Context</code>传入到不同的<code>goroutine</code>中，当主<code>goroutine</code>出错时，直接调用<code>cancel</code>方法就可以取消所有的<code>goroutine</code>。<br>示例代码如下：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	ctx, cancelFunc := context.WithCancel(context.Background())<br>	<span class="hljs-keyword">go</span> test(ctx)<br>	time.Sleep(<span class="hljs-number">3</span> * time.Second)<br>	cancelFunc()<br>	time.Sleep(time.Second)<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">test</span><span class="hljs-params">(ctx context.Context)</span></span> &#123;<br>	<span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; i++ &#123;<br>		time.Sleep(<span class="hljs-number">1</span> * time.Second)<br>		<span class="hljs-keyword">select</span> &#123;<br>		<span class="hljs-keyword">case</span> &lt;-ctx.Done():<br>			fmt.Println(<span class="hljs-string">&quot;取消执行&quot;</span>)<br>			<span class="hljs-keyword">return</span><br>		<span class="hljs-keyword">default</span>:<br>			fmt.Printf(<span class="hljs-string">&quot;test = %d\n&quot;</span>, i)<br>		&#125;<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-<p>上面的代码通过<code>WithCancel</code>创建了一个可以取消的<code>Context</code>，然后创建了一个<code>goroutine</code>执行<code>test</code>方法，当主<code>goroutine</code>等待3秒后调用<code>cancel</code>方法取消，这时候执行<code>test</code>方法的<code>goroutine</code>就会直接退出不再执行。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs go">test = <span class="hljs-number">0</span><br>test = <span class="hljs-number">1</span><br>取消执行<br></code></pre></td></tr></table></figure>
+<h3 id="时间戳转时间"><a href="#时间戳转时间" class="headerlink" title="时间戳转时间"></a>时间戳转时间</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	time1 := time.Unix(<span class="hljs-number">1721735188</span>, <span class="hljs-number">0</span>)<br>	time2 := time.UnixMilli(<span class="hljs-number">1721735188504</span>)<br>	time3 := time.UnixMicro(<span class="hljs-number">1721735188504566</span>)<br>	fmt.Println(time1) <span class="hljs-comment">// 2024-07-23 19:46:28 +0800 CST</span><br>	fmt.Println(time2) <span class="hljs-comment">// 2024-07-23 19:46:28.504 +0800 CST</span><br>	fmt.Println(time3) <span class="hljs-comment">// 2024-07-23 19:46:28.504566 +0800 CST</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<p>使用time包的Unix、UnixMilli和UnixMicro可以分别将秒、毫秒、微秒级别的时间戳转成相应的Time类型的时间。</p>
 
                 
               </div>
@@ -382,9 +379,7 @@
       
         <a href="/tags/Go%E8%AF%AD%E8%A8%80/" class="print-no-link">#Go语言</a>
       
-        <a href="/tags/Golang%E8%BF%9B%E9%98%B6/" class="print-no-link">#Golang进阶</a>
-      
-        <a href="/tags/%E4%B8%8A%E4%B8%8B%E6%96%87/" class="print-no-link">#上下文</a>
+        <a href="/tags/%E6%97%B6%E9%97%B4%E6%A0%BC%E5%BC%8F%E5%8C%96/" class="print-no-link">#时间格式化</a>
       
     </div>
   
@@ -396,8 +391,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Go语言Context如何使用</div>
-      <div>http://example.com/2024/08/19/Go语言Context如何使用/</div>
+      <div>Go语言time包基础使用</div>
+      <div>http://example.com/2024/08/23/Go语言time包基础使用/</div>
     </div>
     <div class="license-meta">
       
@@ -409,7 +404,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2024年8月19日</div>
+          <div>2024年8月23日</div>
         </div>
       
       
@@ -441,18 +436,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/08/23/Go%E8%AF%AD%E8%A8%80time%E5%8C%85%E5%9F%BA%E7%A1%80%E4%BD%BF%E7%94%A8/" title="Go语言time包基础使用">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Go语言time包基础使用</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/08/18/Go%E8%AF%AD%E8%A8%80%E5%AE%9A%E6%97%B6%E5%99%A8%E7%9A%84%E4%BD%BF%E7%94%A8/" title="Go语言定时器的使用">
-                        <span class="hidden-mobile">Go语言定时器的使用</span>
+                      <a href="/2024/08/19/Go%E8%AF%AD%E8%A8%80Context%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8/" title="Go语言Context如何使用">
+                        <span class="hidden-mobile">Go语言Context如何使用</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
