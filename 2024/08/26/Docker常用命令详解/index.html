@@ -19,25 +19,25 @@
   <meta name="author" content="jrlee">
   <meta name="keywords" content="jrlee,个人博客,程序员个人博客,后端开发">
   
-    <meta name="description" content="Go语言中有关于时间和日期的方法都在time包里面，Go语言的time包为开发者提供了一套全面而简洁的工具来处理时间相关的操作。包括解析和格式化时间字符串，计算时间差和时区转换等，time包时Go语言中处理时间和日期的核心组件。">
+    <meta name="description" content="Docker常用命令详解">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Go语言time包基础使用">
-<meta property="og:url" content="http://example.com/2024/08/23/Go%E8%AF%AD%E8%A8%80time%E5%8C%85%E5%9F%BA%E7%A1%80%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:title" content="Docker常用命令详解">
+<meta property="og:url" content="http://example.com/2024/08/26/Docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3/index.html">
 <meta property="og:site_name" content="jrlee&#39;s blog">
-<meta property="og:description" content="Go语言中有关于时间和日期的方法都在time包里面，Go语言的time包为开发者提供了一套全面而简洁的工具来处理时间相关的操作。包括解析和格式化时间字符串，计算时间差和时区转换等，time包时Go语言中处理时间和日期的核心组件。">
+<meta property="og:description" content="Docker常用命令详解">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2024-08-23T11:16:36.000Z">
-<meta property="article:modified_time" content="2024-08-23T11:17:52.055Z">
+<meta property="article:published_time" content="2024-08-26T11:26:26.000Z">
+<meta property="article:modified_time" content="2024-08-26T11:29:30.588Z">
 <meta property="article:author" content="jrlee">
-<meta property="article:tag" content="Go语言">
-<meta property="article:tag" content="时间格式化">
+<meta property="article:tag" content="Docker">
+<meta property="article:tag" content="容器">
 <meta name="twitter:card" content="summary_large_image">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>Go语言time包基础使用 - jrlee&#39;s blog</title>
+  <title>Docker常用命令详解 - jrlee&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -216,7 +216,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Go语言time包基础使用"></span>
+            <span id="subtitle" data-typed-text="Docker常用命令详解"></span>
           
         </div>
 
@@ -232,8 +232,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-08-23 19:16" pubdate>
-          2024年8月23日 晚上
+        <time datetime="2024-08-26 19:26" pubdate>
+          2024年8月26日 晚上
         </time>
       </span>
     
@@ -244,7 +244,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.2k 字
+          954 字
         
       </span>
     
@@ -255,7 +255,7 @@
         
         
         
-          5 分钟
+          4 分钟
         
       </span>
     
@@ -301,12 +301,12 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">Go语言time包基础使用</h1>
+            <h1 id="seo-header">Docker常用命令详解</h1>
             
               <p id="updated-time" class="note note-info" style="">
                 
                   
-                    本文最后更新于 2024年8月23日 晚上
+                    本文最后更新于 2024年8月26日 晚上
                   
                 
               </p>
@@ -314,36 +314,96 @@
             
               <div class="markdown-body">
                 
-                <h2 id="time包"><a href="#time包" class="headerlink" title="time包"></a>time包</h2><p>Go语言中有关于时间和日期的方法都在time包里面，Go语言的time包为开发者提供了一套全面而简洁的工具来处理时间相关的操作。包括解析和格式化时间字符串，计算时间差和时区转换等，time包时Go语言中处理时间和日期的核心组件。</p>
-<h2 id="时间类型（Time）"><a href="#时间类型（Time）" class="headerlink" title="时间类型（Time）"></a>时间类型（Time）</h2><p>time包中的Time结构体表示的是时间类型，在Go语言中，我们可以使用time.Now()方法来获取当前的时间，该方法返回的就是Time类型，调用Time类型的方法就可以分别获取到当前时间的年月日时分秒等信息。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	now := time.Now()<br><br>	fmt.Println(now) <span class="hljs-comment">// 2024-07-23 19:36:03.4481196 +0800 CST m=+0.004232101</span><br><br>	fmt.Println(now.Year())   <span class="hljs-comment">// 2024</span><br>	fmt.Println(now.Month())  <span class="hljs-comment">// July</span><br>	fmt.Println(now.Day())    <span class="hljs-comment">// 23</span><br>	fmt.Println(now.Hour())   <span class="hljs-comment">// 19</span><br>	fmt.Println(now.Minute()) <span class="hljs-comment">// 36</span><br>	fmt.Println(now.Second()) <span class="hljs-comment">// 3</span><br>&#125;<br></code></pre></td></tr></table></figure>
-<h2 id="时间格式化"><a href="#时间格式化" class="headerlink" title="时间格式化"></a>时间格式化</h2><p>从上面的输出可以看到当前日期的输出后面还携带了有其他的消息，不是我们常用的格式，这个时候就可以使用Go语言的时间格式化功能，使用format方法并执行格式化模板，Go语言的格式化模版并不是常用的Y-m-d H:M:S，而是2006-01-02 15:04:05，记忆方法：200612345（相传这个时间为Go语言诞生时间，不知真假）。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	now := time.Now()<br>	fmt.Println(now.Format(<span class="hljs-string">&quot;2006-01-02 15:04:05&quot;</span>))    <span class="hljs-comment">// 2024-07-23 19:37:58</span><br>	fmt.Println(now.Format(<span class="hljs-string">&quot;2006-01-02 03:04:05 PM&quot;</span>)) <span class="hljs-comment">// 2024-07-23 07:41:20 PM</span><br>	fmt.Println(now.Format(<span class="hljs-string">&quot;2006/01/02 15:04&quot;</span>))       <span class="hljs-comment">// 2024/07/23 19:40</span><br>	fmt.Println(now.Format(<span class="hljs-string">&quot;15:04 2006/01/02&quot;</span>))       <span class="hljs-comment">// 19:40 2024/07/23</span><br>	fmt.Println(now.Format(<span class="hljs-string">&quot;2006/01/02&quot;</span>))             <span class="hljs-comment">// 2024/07/23</span><br>&#125;<br></code></pre></td></tr></table></figure>
-<p>除了自己写格式化模版之外，Go语言已经内置了一部分模版可供选择，模版在format包里面，可以直接使用，源码如下：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">const</span> (<br>	Layout      = <span class="hljs-string">&quot;01/02 03:04:05PM &#x27;06 -0700&quot;</span> <span class="hljs-comment">// The reference time, in numerical order.</span><br>	ANSIC       = <span class="hljs-string">&quot;Mon Jan _2 15:04:05 2006&quot;</span><br>	UnixDate    = <span class="hljs-string">&quot;Mon Jan _2 15:04:05 MST 2006&quot;</span><br>	RubyDate    = <span class="hljs-string">&quot;Mon Jan 02 15:04:05 -0700 2006&quot;</span><br>	RFC822      = <span class="hljs-string">&quot;02 Jan 06 15:04 MST&quot;</span><br>	RFC822Z     = <span class="hljs-string">&quot;02 Jan 06 15:04 -0700&quot;</span> <span class="hljs-comment">// RFC822 with numeric zone</span><br>	RFC850      = <span class="hljs-string">&quot;Monday, 02-Jan-06 15:04:05 MST&quot;</span><br>	RFC1123     = <span class="hljs-string">&quot;Mon, 02 Jan 2006 15:04:05 MST&quot;</span><br>	RFC1123Z    = <span class="hljs-string">&quot;Mon, 02 Jan 2006 15:04:05 -0700&quot;</span> <span class="hljs-comment">// RFC1123 with numeric zone</span><br>	RFC3339     = <span class="hljs-string">&quot;2006-01-02T15:04:05Z07:00&quot;</span><br>	RFC3339Nano = <span class="hljs-string">&quot;2006-01-02T15:04:05.999999999Z07:00&quot;</span><br>	Kitchen     = <span class="hljs-string">&quot;3:04PM&quot;</span><br>	<span class="hljs-comment">// Handy time stamps.</span><br>	Stamp      = <span class="hljs-string">&quot;Jan _2 15:04:05&quot;</span><br>	StampMilli = <span class="hljs-string">&quot;Jan _2 15:04:05.000&quot;</span><br>	StampMicro = <span class="hljs-string">&quot;Jan _2 15:04:05.000000&quot;</span><br>	StampNano  = <span class="hljs-string">&quot;Jan _2 15:04:05.000000000&quot;</span><br>	DateTime   = <span class="hljs-string">&quot;2006-01-02 15:04:05&quot;</span><br>	DateOnly   = <span class="hljs-string">&quot;2006-01-02&quot;</span><br>	TimeOnly   = <span class="hljs-string">&quot;15:04:05&quot;</span><br>)<br></code></pre></td></tr></table></figure>
-<h2 id="时间戳"><a href="#时间戳" class="headerlink" title="时间戳"></a>时间戳</h2><p>时间戳是自1970年1月1日（08:00:00GMT）至当前时间的总毫秒数，也被称为Unix时间戳，在Go语言里面，可以获取四种级别的时间戳，分别是秒、毫秒、微秒和纳秒。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	now := time.Now()<br>	fmt.Println(now.Unix())      <span class="hljs-comment">// 1721735188</span><br>	fmt.Println(now.UnixMilli()) <span class="hljs-comment">// 1721735188504</span><br>	fmt.Println(now.UnixMicro()) <span class="hljs-comment">// 1721735188504566</span><br>	fmt.Println(now.UnixNano())  <span class="hljs-comment">// 1721735188504566800</span><br>&#125;<br></code></pre></td></tr></table></figure>
-<h2 id="时间间隔"><a href="#时间间隔" class="headerlink" title="时间间隔"></a>时间间隔</h2><p>在time包里面还定义了一个Duration类型，Duration表示时间间隔，例如可以直接使用time.Second表示1秒，time.Hour * 3表示3个小时，Duration源码定义如下：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">const</span> (<br>	Nanosecond  Duration = <span class="hljs-number">1</span><br>	Microsecond          = <span class="hljs-number">1000</span> * Nanosecond<br>	Millisecond          = <span class="hljs-number">1000</span> * Microsecond<br>	Second               = <span class="hljs-number">1000</span> * Millisecond<br>	Minute               = <span class="hljs-number">60</span> * Second<br>	Hour                 = <span class="hljs-number">60</span> * Minute<br>)<br></code></pre></td></tr></table></figure>
-<h2 id="时间操作"><a href="#时间操作" class="headerlink" title="时间操作"></a>时间操作</h2><p>在Go语言里面还可以非常简单的进行时间的比较以及计算</p>
-<h3 id="时间计算"><a href="#时间计算" class="headerlink" title="时间计算"></a>时间计算</h3><p>可以使用Add方法在当前时间的基础上加上指定的时间间隔。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	now := time.Now()<br>	fmt.Println(now)                    <span class="hljs-comment">// 2024-07-23 19:52:14.0840934 +0800 CST m=+0.004981601</span><br>	fmt.Println(now.Add(time.Hour * <span class="hljs-number">2</span>)) <span class="hljs-comment">// 2024-07-23 21:52:14.0840934 +0800 CST m=+7200.004981601</span><br>&#125;<br></code></pre></td></tr></table></figure>
-<h3 id="时间间隔-1"><a href="#时间间隔-1" class="headerlink" title="时间间隔"></a>时间间隔</h3><p>还可以使用Sub方法计算两个时间之间相隔了多长时间，</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	now := time.Now()<br>	fmt.Println(now.Sub(now.Add(time.Hour * <span class="hljs-number">-2</span>))) <span class="hljs-comment">// 2h0m0s</span><br>&#125;<br></code></pre></td></tr></table></figure>
-<h3 id="之前"><a href="#之前" class="headerlink" title="之前"></a>之前</h3><p>使用Before判断一个时间是否在另一个时间之前</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	now := time.Now()<br>	fmt.Println(now.Before(now.Add(time.Hour))) <span class="hljs-comment">// true</span><br>&#125;<br></code></pre></td></tr></table></figure>
-<h3 id="之后"><a href="#之后" class="headerlink" title="之后"></a>之后</h3><p>使用After判断一个时间是否在另一个时间之后</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	now := time.Now()<br>	fmt.Println(now.After(now.Add(time.Hour))) <span class="hljs-comment">// false</span><br>&#125;<br></code></pre></td></tr></table></figure>
-<h3 id="相同"><a href="#相同" class="headerlink" title="相同"></a>相同</h3><p>使用Equal判断两个时间是否相同</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	now := time.Now()<br>	fmt.Println(now.Equal(now.Add(time.Hour))) <span class="hljs-comment">// false</span><br>&#125;<br></code></pre></td></tr></table></figure>
-<h2 id="时间转换"><a href="#时间转换" class="headerlink" title="时间转换"></a>时间转换</h2><h3 id="字符串转时间"><a href="#字符串转时间" class="headerlink" title="字符串转时间"></a>字符串转时间</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	timeStr := <span class="hljs-string">&quot;2024-07-23 12:23:34&quot;</span><br>	time1, _ := time.Parse(time.DateTime, timeStr)<br>	fmt.Println(time1) <span class="hljs-comment">// 2024-07-23 12:23:34 +0000 UTC</span><br>	time2, _ := time.ParseInLocation(time.DateTime, timeStr, time.Local)<br>	fmt.Println(time2) <span class="hljs-comment">// 2024-07-23 12:23:34 +0800 CST</span><br>&#125;<br></code></pre></td></tr></table></figure>
-<p>可以使用Parse和ParseInLocation将字符串时间转成Time类型的时间，两者的区别如下：</p>
+                <h1 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h1><h2 id="启动类命令"><a href="#启动类命令" class="headerlink" title="启动类命令"></a>启动类命令</h2><p>启动docker：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">systemctl start docker<br></code></pre></td></tr></table></figure>
+<p>停止Docker：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">systemctl stop docker<br></code></pre></td></tr></table></figure>
+<p>重启Docker：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">systemctl restart docker<br></code></pre></td></tr></table></figure>
+<p>查看状态：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">systemctl status docker<br></code></pre></td></tr></table></figure>
+<p>设置开机自启：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">systemctl <span class="hljs-built_in">enable</span> docker<br></code></pre></td></tr></table></figure>
+<h2 id="帮助类命令"><a href="#帮助类命令" class="headerlink" title="帮助类命令"></a>帮助类命令</h2><p>查看Docker版本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker version<br></code></pre></td></tr></table></figure>
+<p>查看Docker概要信息：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker info<br></code></pre></td></tr></table></figure>
+<p>查看Docker总体帮助文档：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker --<span class="hljs-built_in">help</span><br></code></pre></td></tr></table></figure>
+<p>查看docker具体命令帮助文档：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker 具体命令 --<span class="hljs-built_in">help</span><br></code></pre></td></tr></table></figure>
+<h2 id="镜像命令"><a href="#镜像命令" class="headerlink" title="镜像命令"></a>镜像命令</h2><h3 id="列出本地主机上的镜像"><a href="#列出本地主机上的镜像" class="headerlink" title="列出本地主机上的镜像"></a>列出本地主机上的镜像</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker images<br></code></pre></td></tr></table></figure>
+<p>参数：</p>
 <ul>
-<li><code>time.Parse</code> 总是将时间解析为 UTC 时区</li>
-<li><code>time.ParseInLocation</code> 允许指定一个时区解析</li>
+<li><code>a</code>：列出所有镜像（含历史镜像）</li>
+<li><code>q</code>：只显示镜像ID</li>
+<li><code>f</code>：过滤</li>
 </ul>
-<h3 id="时间戳转时间"><a href="#时间戳转时间" class="headerlink" title="时间戳转时间"></a>时间戳转时间</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	time1 := time.Unix(<span class="hljs-number">1721735188</span>, <span class="hljs-number">0</span>)<br>	time2 := time.UnixMilli(<span class="hljs-number">1721735188504</span>)<br>	time3 := time.UnixMicro(<span class="hljs-number">1721735188504566</span>)<br>	fmt.Println(time1) <span class="hljs-comment">// 2024-07-23 19:46:28 +0800 CST</span><br>	fmt.Println(time2) <span class="hljs-comment">// 2024-07-23 19:46:28.504 +0800 CST</span><br>	fmt.Println(time3) <span class="hljs-comment">// 2024-07-23 19:46:28.504566 +0800 CST</span><br>&#125;<br></code></pre></td></tr></table></figure>
-<p>使用time包的Unix、UnixMilli和UnixMicro可以分别将秒、毫秒、微秒级别的时间戳转成相应的Time类型的时间。</p>
+<h3 id="在远程仓库中搜索镜像"><a href="#在远程仓库中搜索镜像" class="headerlink" title="在远程仓库中搜索镜像"></a>在远程仓库中搜索镜像</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 默认取docker hub中搜索</span><br>docker search 镜像名称<br></code></pre></td></tr></table></figure>
+<p>参数：</p>
+<ul>
+<li><code>f</code>：过滤</li>
+<li><code>-limit 数量</code>：只展示前几项</li>
+</ul>
+<h3 id="下载镜像"><a href="#下载镜像" class="headerlink" title="下载镜像"></a>下载镜像</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker pull 镜像名称[:tag]<br></code></pre></td></tr></table></figure>
+<p>不加 tag 时，默认下载最新的镜像（即tag为<code>latest</code>）。</p>
+<h3 id="查看占据的空间"><a href="#查看占据的空间" class="headerlink" title="查看占据的空间"></a>查看占据的空间</h3><p>查看镜像&#x2F;容器&#x2F;数据卷所占的空间：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker system <span class="hljs-built_in">df</span><br></code></pre></td></tr></table></figure>
+<h3 id="删除镜像"><a href="#删除镜像" class="headerlink" title="删除镜像"></a>删除镜像</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker rmi 镜像名称/ID<br></code></pre></td></tr></table></figure>
+<p>可以使用空格分隔，删除多个镜像：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker rmi 镜像1 镜像2 镜像3<br></code></pre></td></tr></table></figure>
+<p>删除全部镜像：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker rmi -f <span class="hljs-variable">$&#123;docker images -qa&#125;</span><br></code></pre></td></tr></table></figure>
+<h2 id="容器命令"><a href="#容器命令" class="headerlink" title="容器命令"></a><strong>容器命令</strong></h2><h3 id="新建启动容器"><a href="#新建启动容器" class="headerlink" title="新建启动容器"></a>新建启动容器</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker run [OPTIONS] IMAGE [COMMAND] [ARG...]<br></code></pre></td></tr></table></figure>
+<p>常用的参数：</p>
+<ul>
+<li><code>-name</code>：为容器指定一个名称</li>
+<li><code>d</code>：后台运行容器并返回容器ID，也即启动守护式容器</li>
+<li><code>i</code>：以交互模式（interactive）运行容器，通常与<code>t</code>同时使用</li>
+<li><code>t</code>：为容器重新分配一个伪输入终端（tty），通常与<code>i</code>同时使用。也即启动交互式容器（前台有伪终端，等待交互）</li>
+<li><code>e</code>：为容器添加环境变量</li>
+<li><code>P</code>：随机端口映射。将容器内暴露的所有端口映射到宿主机随机端口</li>
+<li><code>p</code>：指定端口映射</li>
+<li><code>p</code>指定端口映射的几种不同形式：</li>
+<li><code>p hostPort:containerPort</code>：端口映射，例如<code>p 8080:80</code></li>
+<li><code>p ip:hostPort:containerPort</code>：配置监听地址，例如 <code>p 10.0.0.1:8080:80</code></li>
+<li><code>p ip::containerPort</code>：随机分配端口，例如 <code>p 10.0.0.1::80</code></li>
+<li><code>p hostPort1:containerPort1 -p hostPort2:containerPort2</code>：指定多个端口映射，例如<code>p 8080:80 -p 8888:3306</code></li>
+</ul>
+<p>示例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker run --name nginx001 -p 80:8080 -d nginx<br></code></pre></td></tr></table></figure>
+<h3 id="启动交互式容器"><a href="#启动交互式容器" class="headerlink" title="启动交互式容器"></a>启动交互式容器</h3><p>以交互方式启动ubuntu镜像</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># -i 交互模式</span><br><span class="hljs-comment"># -t 分配一个伪输入终端tty</span><br><span class="hljs-comment"># ubuntu 镜像名称</span><br><span class="hljs-comment"># /bin/bash（或者bash） shell交互的接口</span><br>docker run -it ubuntu /bin/bash<br></code></pre></td></tr></table></figure>
+<p>退出交互模式：<br>方式1：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 在交互shell中exit即可退回宿主机</span><br><span class="hljs-built_in">exit</span>;<br></code></pre></td></tr></table></figure>
+<p>方式2：使用快捷键<code>ctrl</code> + <code>P</code> + <code>Q</code><br>方式1 退出后，容器会停止；<br>方式2 退出后容器依然正在运行。</p>
+<h3 id="启动守护式容器"><a href="#启动守护式容器" class="headerlink" title="启动守护式容器"></a>启动守护式容器</h3><p>大部分情况下，我们系统docker容器服务时在后台运行的，可以通过<code>-d</code>指定容器的后台运行模式：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker run -d 容器名<br></code></pre></td></tr></table></figure>
+<p>注意事项：<br>如果使用<code>docker run -d ubuntu</code>尝试启动守护式的ubuntu，会发现容器启动后就自动退出了。<br>因为Docker容器如果在后台运行，就必须要有一个前台进程。容器运行的命令如果不是那些一直挂起的命令（例如<code>top</code>、<code>tail</code>），就会自动退出。</p>
+<h3 id="列出正在运行的容器"><a href="#列出正在运行的容器" class="headerlink" title="列出正在运行的容器"></a>列出正在运行的容器</h3><p>列出所有正在运行的容器：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker ps [OPTIONS]<br></code></pre></td></tr></table></figure>
+<p>常用参数：</p>
+<ul>
+<li><code>a</code>：列出当前所有正在运行的容器+历史上运行过的容器</li>
+<li><code>l</code>：显示最近创建的容器</li>
+<li><code>n</code>：显示最近n个创建的容器</li>
+<li><code>q</code>：静默模式，只显示容器编号</li>
+</ul>
+<h3 id="启动已经停止的容器"><a href="#启动已经停止的容器" class="headerlink" title="启动已经停止的容器"></a>启动已经停止的容器</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker start 容器ID或容器名<br></code></pre></td></tr></table></figure>
+<h3 id="重启容器"><a href="#重启容器" class="headerlink" title="重启容器"></a>重启容器</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker restart 容器ID或容器名<br></code></pre></td></tr></table></figure>
+<h3 id="停止容器"><a href="#停止容器" class="headerlink" title="停止容器"></a>停止容器</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker stop 容器ID或容器名<br></code></pre></td></tr></table></figure>
+<h3 id="强制停止容器"><a href="#强制停止容器" class="headerlink" title="强制停止容器"></a>强制停止容器</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker <span class="hljs-built_in">kill</span> 容器ID或容器名<br></code></pre></td></tr></table></figure>
+<h3 id="删除容器"><a href="#删除容器" class="headerlink" title="删除容器"></a>删除容器</h3><p>删除已经停止的容器：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker <span class="hljs-built_in">rm</span> 容器ID或容器名<br></code></pre></td></tr></table></figure>
+<blockquote>
+<p>删除容器是 docker rm，删除镜像是 docker rmi，注意区分。</p>
+</blockquote>
+<p>强制删除正在运行的容器：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker <span class="hljs-built_in">rm</span> -f 容器ID或容器名<br></code></pre></td></tr></table></figure>
+<h3 id="虚悬镜像"><a href="#虚悬镜像" class="headerlink" title="虚悬镜像"></a>虚悬镜像</h3><p>列出docker中的虚悬镜像：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker image <span class="hljs-built_in">ls</span> -f dangling=<span class="hljs-literal">true</span><br></code></pre></td></tr></table></figure>
+<p>虚悬镜像一般是因为一些错误而出现的，没有存在价值，可以删除：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 删除所有的虚悬镜像</span><br>docker image prune<br></code></pre></td></tr></table></figure>
 
                 
               </div>
@@ -362,7 +422,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/Go%E8%AF%AD%E8%A8%80/" class="category-chain-item">Go语言</a>
+  <a href="/categories/Docker/" class="category-chain-item">Docker</a>
   
   
 
@@ -377,9 +437,9 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/Go%E8%AF%AD%E8%A8%80/" class="print-no-link">#Go语言</a>
+        <a href="/tags/Docker/" class="print-no-link">#Docker</a>
       
-        <a href="/tags/%E6%97%B6%E9%97%B4%E6%A0%BC%E5%BC%8F%E5%8C%96/" class="print-no-link">#时间格式化</a>
+        <a href="/tags/%E5%AE%B9%E5%99%A8/" class="print-no-link">#容器</a>
       
     </div>
   
@@ -391,8 +451,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Go语言time包基础使用</div>
-      <div>http://example.com/2024/08/23/Go语言time包基础使用/</div>
+      <div>Docker常用命令详解</div>
+      <div>http://example.com/2024/08/26/Docker常用命令详解/</div>
     </div>
     <div class="license-meta">
       
@@ -404,7 +464,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2024年8月23日</div>
+          <div>2024年8月26日</div>
         </div>
       
       
@@ -436,18 +496,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/08/26/Docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3/" title="Docker常用命令详解">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Docker常用命令详解</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/08/19/Go%E8%AF%AD%E8%A8%80Context%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8/" title="Go语言Context如何使用">
-                        <span class="hidden-mobile">Go语言Context如何使用</span>
+                      <a href="/2024/08/23/Go%E8%AF%AD%E8%A8%80time%E5%8C%85%E5%9F%BA%E7%A1%80%E4%BD%BF%E7%94%A8/" title="Go语言time包基础使用">
+                        <span class="hidden-mobile">Go语言time包基础使用</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
