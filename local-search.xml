@@ -4,6 +4,31 @@
   
   
   <entry>
+    <title>Go语言入门01—环境安装</title>
+    <link href="/2024/09/03/Go%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A801%E2%80%94%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85/"/>
+    <url>/2024/09/03/Go%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A801%E2%80%94%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85/</url>
+    
+    <content type="html"><![CDATA[<h2 id="go语言开发包"><a href="#go语言开发包" class="headerlink" title="go语言开发包"></a>go语言开发包</h2><p>下载地址：<a href="https://go.dev/dl/">https://go.dev/dl/</a></p><p>进入官网选择对应的版本和系统下载并安装即可，官网有各个版本的安装包，如果是Windows可选择msi格式的安装文件进行安装，使用该格式可以不需要自己配置环境变量，安装完即可直接使用。（由于Go语言更新速度快，所以版本可能有所差距，直接安装最新版即可）</p><h2 id="编辑器"><a href="#编辑器" class="headerlink" title="编辑器"></a>编辑器</h2><p>GoLand：<a href="https://www.jetbrains.com/go/">https://www.jetbrains.com/go/</a></p><p>GoLand为jetbrains公司针对Go语言的开发工具，该工具为收费工具，可下载后自行购买或使用学生优惠免费使用，同样可通过其他手段使用。</p><h2 id="新建项目"><a href="#新建项目" class="headerlink" title="新建项目"></a>新建项目</h2><p>下载安装完成之后，点击打开即可选择New Project新建项目，在新建项目的时候Goland会自动搜索到本机已经安装的Go语言开发环境。</p><h2 id="HelloWorld"><a href="#HelloWorld" class="headerlink" title="HelloWorld"></a>HelloWorld</h2><p>新建项目之后可在项目根目录下新建main.go文件，在文件中输入以下代码，运行即可打印出hello world，能正常打印则表示Go语言开发环境以及GoLand开发工具均安装配置成功。</p><h2 id="Go基本语法"><a href="#Go基本语法" class="headerlink" title="Go基本语法"></a>Go基本语法</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span><br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>fmt.Println(<span class="hljs-string">&quot;hello world&quot;</span>)<br>&#125;<br></code></pre></td></tr></table></figure><h2 id="代码解析"><a href="#代码解析" class="headerlink" title="代码解析"></a>代码解析</h2><ol><li><code>package main</code>：通过package关键字指定包名，在go文件中，必须要在代码一行指定当前文件属于哪个包名，包名可以自定义，但是一个go语言程序中必须有一个main包。</li><li><code>import &quot;fmt&quot;</code>：导入fmt包，导入之后在该文件中即可使用fmt包中的函数，fmt包中主要有格式化IO输入输出函数。</li><li><code>func main()</code>：main函数，一个go语言程序中必须包含一个main主函数，该函数是程序运行时执行的第一个函数（如果有init函数则第一个执行init函数）。</li><li><code>fmt.Println(&quot;hello world&quot;)</code>：调用fmt包中的打印函数Println，该函数可将其中的字符串打印到控制台上，并且在打印完成之后换行。</li></ol>]]></content>
+    
+    
+    <categories>
+      
+      <category>Go语言入门</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Golang入门</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Golang原子操作详解</title>
     <link href="/2024/08/29/Golang%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C%E8%AF%A6%E8%A7%A3/"/>
     <url>/2024/08/29/Golang%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C%E8%AF%A6%E8%A7%A3/</url>
