@@ -47,15 +47,6 @@
   </url>
   
   <url>
-    <loc>http://example.com/p/a4fd9aa6.html</loc>
-    
-    <lastmod>2024-09-28</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>http://example.com/p/7e7c57a1.html</loc>
     
     <lastmod>2024-09-28</lastmod>
@@ -74,7 +65,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/p/def899cd.html</loc>
+    <loc>http://example.com/p/a4fd9aa6.html</loc>
     
     <lastmod>2024-09-28</lastmod>
     
@@ -83,7 +74,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/p/b36c2af7.html</loc>
+    <loc>http://example.com/p/def899cd.html</loc>
     
     <lastmod>2024-09-28</lastmod>
     
@@ -101,7 +92,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/p/997792c1.html</loc>
+    <loc>http://example.com/p/b36c2af7.html</loc>
     
     <lastmod>2024-09-28</lastmod>
     
@@ -111,6 +102,15 @@
   
   <url>
     <loc>http://example.com/p/ce34811b.html</loc>
+    
+    <lastmod>2024-09-28</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://example.com/p/997792c1.html</loc>
     
     <lastmod>2024-09-28</lastmod>
     
@@ -212,13 +212,6 @@
   </url>
   
   <url>
-    <loc>http://example.com/tags/%E5%B9%B6%E5%8F%91/</loc>
-    <lastmod>2024-09-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>http://example.com/tags/Golang%E8%BF%9B%E9%98%B6/</loc>
     <lastmod>2024-09-28</lastmod>
     <changefreq>weekly</changefreq>
@@ -233,7 +226,7 @@
   </url>
   
   <url>
-    <loc>http://example.com/tags/Golang%E5%85%A5%E9%97%A8/</loc>
+    <loc>http://example.com/tags/%E5%B9%B6%E5%8F%91/</loc>
     <lastmod>2024-09-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -241,6 +234,13 @@
   
   <url>
     <loc>http://example.com/tags/%E6%97%B6%E9%97%B4%E6%A0%BC%E5%BC%8F%E5%8C%96/</loc>
+    <lastmod>2024-09-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://example.com/tags/Golang%E5%85%A5%E9%97%A8/</loc>
     <lastmod>2024-09-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
