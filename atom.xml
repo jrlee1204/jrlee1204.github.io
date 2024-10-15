@@ -2,28 +2,45 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>jrlee&#39;s blog</title>
   
-  <description>feedId:68946518944817152+userId:68844453982752768</description>
   
-  <link href="http://example.com/atom.xml" rel="self"/>
+  <link href="https://www.jrlee.cnatom.xml" rel="self"/>
   
-  <link href="http://example.com/"/>
-  <updated>2024-10-15T09:27:38.255Z</updated>
-  <id>http://example.com/</id>
+  <link href="https://www.jrlee.cn"/>
+  <updated>2024-10-15T12:13:25.519Z</updated>
+  <id>https://www.jrlee.cn</id>
   
   <author>
     <name>jrlee</name>
     
   </author>
-  <follow_challenge>
-    <feedId>68946518944817152</feedId>
-    <userId>68844453982752768</userId>
-  </follow_challenge>
+  
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Go语言入门09——指针</title>
+    <link href="https://www.jrlee.cnp/dbf54b0d.html"/>
+    <id>https://www.jrlee.cnp/dbf54b0d.html</id>
+    <published>2024-10-15T12:08:52.000Z</published>
+    <updated>2024-10-15T12:13:25.519Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="指针"><a href="#指针" class="headerlink" title="指针"></a>指针</h1><p>在go语言中，每一个变量在运行时都会拥有一个地址，这个地址代表的就是变量在内存中的位置，而指针就是指向这个地址的变量。使用go语言中的指针很简单，只需要记住两个关键字符，<code>&amp;</code>（取地址符）和<code>*</code>（取值符）。</p><h1 id="取地址符"><a href="#取地址符" class="headerlink" title="取地址符"></a>取地址符</h1><p>取地址符的使用很简单，只需要在变量前面加上取地址符<code>&amp;</code>即可取到该变量在内存中的地址，保存地址的变量就称为指针。</p><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span><br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>a := <span class="hljs-number">1</span><span class="hljs-comment">// 定义一个变量a，并赋值为1</span><br>b := &amp;a<span class="hljs-comment">// 通过取地址符取出变量a在内存中的地址</span><br>fmt.Println(b)<span class="hljs-comment">// 打印取出的地址</span><br>&#125;<br></code></pre></td></tr></table></figure><p>运行结果：每个人的运行结果不一样，只要打印的是如下格式的内容表示成功。</p><img src="/p/dbf54b0d/1.png" class="" title="运行结果"><h1 id="取值符"><a href="#取值符" class="headerlink" title="取值符"></a>取值符</h1><p>通过上面的取地址符能够取出变量a在内存中的地址，然后通过地址同样可以取出变量对应的值，取值符<code>*</code> 使用在第一步取出的地址变量之前即可取出对应的值。</p><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span><br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>a := <span class="hljs-number">1</span><br>b := &amp;a<br>c := *b<br>fmt.Printf(<span class="hljs-string">&quot;b的类型：%T \n&quot;</span>, b)<br>fmt.Printf(<span class="hljs-string">&quot;c的值：%d \n&quot;</span>, c)<br>&#125;<br></code></pre></td></tr></table></figure><p>此时的指针b中保存的就是变量a在内存中的地址，<strong>变量b此时的类型为</strong><code>***int**</code><strong>，称作int的指针类型，</strong>通过取值符<code>*b</code>则可以取到b地址对应的变量值。</p><p>运行结果：</p><img src="/p/dbf54b0d/2.png" class="" title="运行结果"><h1 id="指针声明"><a href="#指针声明" class="headerlink" title="指针声明"></a>指针声明</h1><p>go语言中的值类型<code>int float32 string</code>等都有其对应的指针类型：<code>*int *float32 *string</code>，在声明指针时，需要使用到指针类型。</p><p>语法：</p><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">var</span> 指针名 *类型<br></code></pre></td></tr></table></figure><p>代码示例：</p><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span><br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br><span class="hljs-keyword">var</span> a *<span class="hljs-type">int</span><span class="hljs-comment">// 定义一个指针类型</span><br>fmt.Println(a)<span class="hljs-comment">// 输出为&lt;nil&gt;</span><br>&#125;<br></code></pre></td></tr></table></figure><p>上面定义了一个指针a，但是指针a没有分配到变量时，其值就为nil，称之为空指针。</p><p>直接给指针赋值：</p><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span><br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br><span class="hljs-keyword">var</span> a *<span class="hljs-type">int</span><br>*a = <span class="hljs-number">1</span><br>fmt.Println(a)<br>&#125;<br></code></pre></td></tr></table></figure><p>如果如上所示直接运行，代码会产生报错，报错信息如下，报错原因是在Go语言中对于引用类型的变量，在使用的时候不仅要声明，还要为其分配内存空间，否则赋的值就没办法存储。而对于值类型的声明不需要分配内存空间，是因为它们在声明的时候已经默认分配好了内存空间。</p><img src="/p/dbf54b0d/3.png" class="" title="运行结果"><h1 id="new"><a href="#new" class="headerlink" title="new"></a>new</h1><p>函数签名：</p><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">new</span><span class="hljs-params">(Type)</span></span> *Type<br></code></pre></td></tr></table></figure><p>使用new函数时，传入一个类型，返回一个指向该类型内存地址的指针，使用new得到的指针其对应的值为该类型的默认值。</p><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs go">a := <span class="hljs-built_in">new</span>(<span class="hljs-type">int</span>)<br>b := <span class="hljs-built_in">new</span>(<span class="hljs-type">bool</span>)<br>fmt.Println(*a)       <span class="hljs-comment">// 默认值为 0</span><br>fmt.Println(*b)       <span class="hljs-comment">// 默认值为 false</span><br></code></pre></td></tr></table></figure><p>上面的<code>var a *int</code>只是声明了一个指针并没有初始化分配内存空间，所以才会报错，如果使用new进行初始化指针就没有问题了。</p><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span><br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>a := <span class="hljs-built_in">new</span>(<span class="hljs-type">int</span>)<br>*a = <span class="hljs-number">1</span><br>fmt.Printf(<span class="hljs-string">&quot;a的值：%d \n&quot;</span>, *a)<br>fmt.Printf(<span class="hljs-string">&quot;a的类型：%T \n&quot;</span>, a)<br>&#125;<br></code></pre></td></tr></table></figure><p>运行结果：</p><img src="/p/dbf54b0d/4.png" class="" title="运行结果">]]></content>
+    
+    
+    <summary type="html">在go语言中，每一个变量在运行时都会拥有一个地址，这个地址代表的就是变量在内存中的位置，而指针就是指向这个地址的变量。</summary>
+    
+    
+    
+    <category term="Go语言入门" scheme="https://www.jrlee.cncategories/Go%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A8/"/>
+    
+    
+    <category term="Golang入门" scheme="https://www.jrlee.cntags/Golang%E5%85%A5%E9%97%A8/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Go语言入门08——Map</title>
-    <link href="http://example.com/p/a4fd9aa6.html"/>
-    <id>http://example.com/p/a4fd9aa6.html</id>
+    <link href="https://www.jrlee.cnp/a4fd9aa6.html"/>
+    <id>https://www.jrlee.cnp/a4fd9aa6.html</id>
     <published>2024-09-28T04:23:13.000Z</published>
     <updated>2024-10-15T09:27:38.255Z</updated>
     
@@ -34,17 +51,17 @@
     
     
     
-    <category term="Go语言入门" scheme="http://example.com/categories/Go%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A8/"/>
+    <category term="Go语言入门" scheme="https://www.jrlee.cncategories/Go%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A8/"/>
     
     
-    <category term="Golang入门" scheme="http://example.com/tags/Golang%E5%85%A5%E9%97%A8/"/>
+    <category term="Golang入门" scheme="https://www.jrlee.cntags/Golang%E5%85%A5%E9%97%A8/"/>
     
   </entry>
   
   <entry>
     <title>Go语言入门07——切片</title>
-    <link href="http://example.com/p/b36c2af7.html"/>
-    <id>http://example.com/p/b36c2af7.html</id>
+    <link href="https://www.jrlee.cnp/b36c2af7.html"/>
+    <id>https://www.jrlee.cnp/b36c2af7.html</id>
     <published>2024-09-28T04:17:25.000Z</published>
     <updated>2024-10-15T09:27:38.249Z</updated>
     
@@ -55,17 +72,17 @@
     
     
     
-    <category term="Go语言入门" scheme="http://example.com/categories/Go%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A8/"/>
+    <category term="Go语言入门" scheme="https://www.jrlee.cncategories/Go%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A8/"/>
     
     
-    <category term="Golang入门" scheme="http://example.com/tags/Golang%E5%85%A5%E9%97%A8/"/>
+    <category term="Golang入门" scheme="https://www.jrlee.cntags/Golang%E5%85%A5%E9%97%A8/"/>
     
   </entry>
   
   <entry>
     <title>Go语言入门06——数组</title>
-    <link href="http://example.com/p/699b173c.html"/>
-    <id>http://example.com/p/699b173c.html</id>
+    <link href="https://www.jrlee.cnp/699b173c.html"/>
+    <id>https://www.jrlee.cnp/699b173c.html</id>
     <published>2024-09-28T04:12:57.000Z</published>
     <updated>2024-10-15T09:27:38.243Z</updated>
     
@@ -76,17 +93,17 @@
     
     
     
-    <category term="Go语言入门" scheme="http://example.com/categories/Go%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A8/"/>
+    <category term="Go语言入门" scheme="https://www.jrlee.cncategories/Go%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A8/"/>
     
     
-    <category term="Golang入门" scheme="http://example.com/tags/Golang%E5%85%A5%E9%97%A8/"/>
+    <category term="Golang入门" scheme="https://www.jrlee.cntags/Golang%E5%85%A5%E9%97%A8/"/>
     
   </entry>
   
   <entry>
     <title>Go语言入门05——循环语句</title>
-    <link href="http://example.com/p/7e7c57a1.html"/>
-    <id>http://example.com/p/7e7c57a1.html</id>
+    <link href="https://www.jrlee.cnp/7e7c57a1.html"/>
+    <id>https://www.jrlee.cnp/7e7c57a1.html</id>
     <published>2024-09-22T05:35:59.000Z</published>
     <updated>2024-10-15T09:27:38.239Z</updated>
     
@@ -97,17 +114,17 @@
     
     
     
-    <category term="Go语言入门" scheme="http://example.com/categories/Go%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A8/"/>
+    <category term="Go语言入门" scheme="https://www.jrlee.cncategories/Go%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A8/"/>
     
     
-    <category term="Golang入门" scheme="http://example.com/tags/Golang%E5%85%A5%E9%97%A8/"/>
+    <category term="Golang入门" scheme="https://www.jrlee.cntags/Golang%E5%85%A5%E9%97%A8/"/>
     
   </entry>
   
   <entry>
     <title>Go语言入门04——条件语句</title>
-    <link href="http://example.com/p/3f78afe9.html"/>
-    <id>http://example.com/p/3f78afe9.html</id>
+    <link href="https://www.jrlee.cnp/3f78afe9.html"/>
+    <id>https://www.jrlee.cnp/3f78afe9.html</id>
     <published>2024-09-22T05:27:35.000Z</published>
     <updated>2024-10-15T09:27:38.230Z</updated>
     
@@ -118,17 +135,17 @@
     
     
     
-    <category term="Go语言入门" scheme="http://example.com/categories/Go%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A8/"/>
+    <category term="Go语言入门" scheme="https://www.jrlee.cncategories/Go%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A8/"/>
     
     
-    <category term="Golang入门" scheme="http://example.com/tags/Golang%E5%85%A5%E9%97%A8/"/>
+    <category term="Golang入门" scheme="https://www.jrlee.cntags/Golang%E5%85%A5%E9%97%A8/"/>
     
   </entry>
   
   <entry>
     <title>基于角色的访问控制：RBAC权限模型详解</title>
-    <link href="http://example.com/p/8ac4d780.html"/>
-    <id>http://example.com/p/8ac4d780.html</id>
+    <link href="https://www.jrlee.cnp/8ac4d780.html"/>
+    <id>https://www.jrlee.cnp/8ac4d780.html</id>
     <published>2024-09-08T06:11:38.000Z</published>
     <updated>2024-10-15T09:27:38.263Z</updated>
     
@@ -139,19 +156,19 @@
     
     
     
-    <category term="通用技术" scheme="http://example.com/categories/%E9%80%9A%E7%94%A8%E6%8A%80%E6%9C%AF/"/>
+    <category term="通用技术" scheme="https://www.jrlee.cncategories/%E9%80%9A%E7%94%A8%E6%8A%80%E6%9C%AF/"/>
     
     
-    <category term="RBAC" scheme="http://example.com/tags/RBAC/"/>
+    <category term="RBAC" scheme="https://www.jrlee.cntags/RBAC/"/>
     
-    <category term="权限控制" scheme="http://example.com/tags/%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6/"/>
+    <category term="权限控制" scheme="https://www.jrlee.cntags/%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6/"/>
     
   </entry>
   
   <entry>
     <title>Go语言入门03——运算符</title>
-    <link href="http://example.com/p/def899cd.html"/>
-    <id>http://example.com/p/def899cd.html</id>
+    <link href="https://www.jrlee.cnp/def899cd.html"/>
+    <id>https://www.jrlee.cnp/def899cd.html</id>
     <published>2024-09-08T04:44:16.000Z</published>
     <updated>2024-10-15T09:27:38.224Z</updated>
     
@@ -162,17 +179,17 @@
     
     
     
-    <category term="Go语言入门" scheme="http://example.com/categories/Go%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A8/"/>
+    <category term="Go语言入门" scheme="https://www.jrlee.cncategories/Go%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A8/"/>
     
     
-    <category term="Golang入门" scheme="http://example.com/tags/Golang%E5%85%A5%E9%97%A8/"/>
+    <category term="Golang入门" scheme="https://www.jrlee.cntags/Golang%E5%85%A5%E9%97%A8/"/>
     
   </entry>
   
   <entry>
     <title>Go语言入门02——数据类型</title>
-    <link href="http://example.com/p/3d95b216.html"/>
-    <id>http://example.com/p/3d95b216.html</id>
+    <link href="https://www.jrlee.cnp/3d95b216.html"/>
+    <id>https://www.jrlee.cnp/3d95b216.html</id>
     <published>2024-09-03T11:32:24.000Z</published>
     <updated>2024-10-15T09:27:38.223Z</updated>
     
@@ -183,17 +200,17 @@
     
     
     
-    <category term="Go语言入门" scheme="http://example.com/categories/Go%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A8/"/>
+    <category term="Go语言入门" scheme="https://www.jrlee.cncategories/Go%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A8/"/>
     
     
-    <category term="Golang入门" scheme="http://example.com/tags/Golang%E5%85%A5%E9%97%A8/"/>
+    <category term="Golang入门" scheme="https://www.jrlee.cntags/Golang%E5%85%A5%E9%97%A8/"/>
     
   </entry>
   
   <entry>
     <title>Go语言入门01——环境安装</title>
-    <link href="http://example.com/p/997792c1.html"/>
-    <id>http://example.com/p/997792c1.html</id>
+    <link href="https://www.jrlee.cnp/997792c1.html"/>
+    <id>https://www.jrlee.cnp/997792c1.html</id>
     <published>2024-09-03T11:04:23.000Z</published>
     <updated>2024-10-15T09:27:38.222Z</updated>
     
@@ -204,17 +221,17 @@
     
     
     
-    <category term="Go语言入门" scheme="http://example.com/categories/Go%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A8/"/>
+    <category term="Go语言入门" scheme="https://www.jrlee.cncategories/Go%E8%AF%AD%E8%A8%80%E5%85%A5%E9%97%A8/"/>
     
     
-    <category term="Golang入门" scheme="http://example.com/tags/Golang%E5%85%A5%E9%97%A8/"/>
+    <category term="Golang入门" scheme="https://www.jrlee.cntags/Golang%E5%85%A5%E9%97%A8/"/>
     
   </entry>
   
   <entry>
     <title>Golang原子操作详解</title>
-    <link href="http://example.com/p/a637193b.html"/>
-    <id>http://example.com/p/a637193b.html</id>
+    <link href="https://www.jrlee.cnp/a637193b.html"/>
+    <id>https://www.jrlee.cnp/a637193b.html</id>
     <published>2024-08-29T12:06:03.000Z</published>
     <updated>2024-10-15T09:27:38.219Z</updated>
     
@@ -225,21 +242,21 @@
     
     
     
-    <category term="Go语言" scheme="http://example.com/categories/Go%E8%AF%AD%E8%A8%80/"/>
+    <category term="Go语言" scheme="https://www.jrlee.cncategories/Go%E8%AF%AD%E8%A8%80/"/>
     
     
-    <category term="Go语言" scheme="http://example.com/tags/Go%E8%AF%AD%E8%A8%80/"/>
+    <category term="Go语言" scheme="https://www.jrlee.cntags/Go%E8%AF%AD%E8%A8%80/"/>
     
-    <category term="Golang进阶" scheme="http://example.com/tags/Golang%E8%BF%9B%E9%98%B6/"/>
+    <category term="并发" scheme="https://www.jrlee.cntags/%E5%B9%B6%E5%8F%91/"/>
     
-    <category term="并发" scheme="http://example.com/tags/%E5%B9%B6%E5%8F%91/"/>
+    <category term="Golang进阶" scheme="https://www.jrlee.cntags/Golang%E8%BF%9B%E9%98%B6/"/>
     
   </entry>
   
   <entry>
     <title>Docker常用命令详解</title>
-    <link href="http://example.com/p/62a12d8b.html"/>
-    <id>http://example.com/p/62a12d8b.html</id>
+    <link href="https://www.jrlee.cnp/62a12d8b.html"/>
+    <id>https://www.jrlee.cnp/62a12d8b.html</id>
     <published>2024-08-26T11:26:26.000Z</published>
     <updated>2024-10-15T09:27:38.218Z</updated>
     
@@ -250,19 +267,19 @@
     
     
     
-    <category term="Docker" scheme="http://example.com/categories/Docker/"/>
+    <category term="Docker" scheme="https://www.jrlee.cncategories/Docker/"/>
     
     
-    <category term="Docker" scheme="http://example.com/tags/Docker/"/>
+    <category term="Docker" scheme="https://www.jrlee.cntags/Docker/"/>
     
-    <category term="容器" scheme="http://example.com/tags/%E5%AE%B9%E5%99%A8/"/>
+    <category term="容器" scheme="https://www.jrlee.cntags/%E5%AE%B9%E5%99%A8/"/>
     
   </entry>
   
   <entry>
     <title>Go语言time包基础使用</title>
-    <link href="http://example.com/p/ce34811b.html"/>
-    <id>http://example.com/p/ce34811b.html</id>
+    <link href="https://www.jrlee.cnp/ce34811b.html"/>
+    <id>https://www.jrlee.cnp/ce34811b.html</id>
     <published>2024-08-23T11:16:36.000Z</published>
     <updated>2024-10-15T09:27:38.220Z</updated>
     
@@ -273,19 +290,19 @@
     
     
     
-    <category term="Go语言" scheme="http://example.com/categories/Go%E8%AF%AD%E8%A8%80/"/>
+    <category term="Go语言" scheme="https://www.jrlee.cncategories/Go%E8%AF%AD%E8%A8%80/"/>
     
     
-    <category term="Go语言" scheme="http://example.com/tags/Go%E8%AF%AD%E8%A8%80/"/>
+    <category term="Go语言" scheme="https://www.jrlee.cntags/Go%E8%AF%AD%E8%A8%80/"/>
     
-    <category term="时间格式化" scheme="http://example.com/tags/%E6%97%B6%E9%97%B4%E6%A0%BC%E5%BC%8F%E5%8C%96/"/>
+    <category term="时间格式化" scheme="https://www.jrlee.cntags/%E6%97%B6%E9%97%B4%E6%A0%BC%E5%BC%8F%E5%8C%96/"/>
     
   </entry>
   
   <entry>
     <title>Go语言Context如何使用</title>
-    <link href="http://example.com/p/5226b0cc.html"/>
-    <id>http://example.com/p/5226b0cc.html</id>
+    <link href="https://www.jrlee.cnp/5226b0cc.html"/>
+    <id>https://www.jrlee.cnp/5226b0cc.html</id>
     <published>2024-08-19T10:57:14.000Z</published>
     <updated>2024-10-15T09:27:38.220Z</updated>
     
@@ -296,21 +313,21 @@
     
     
     
-    <category term="Go语言" scheme="http://example.com/categories/Go%E8%AF%AD%E8%A8%80/"/>
+    <category term="Go语言" scheme="https://www.jrlee.cncategories/Go%E8%AF%AD%E8%A8%80/"/>
     
     
-    <category term="Go语言" scheme="http://example.com/tags/Go%E8%AF%AD%E8%A8%80/"/>
+    <category term="Go语言" scheme="https://www.jrlee.cntags/Go%E8%AF%AD%E8%A8%80/"/>
     
-    <category term="Golang进阶" scheme="http://example.com/tags/Golang%E8%BF%9B%E9%98%B6/"/>
+    <category term="Golang进阶" scheme="https://www.jrlee.cntags/Golang%E8%BF%9B%E9%98%B6/"/>
     
-    <category term="上下文" scheme="http://example.com/tags/%E4%B8%8A%E4%B8%8B%E6%96%87/"/>
+    <category term="上下文" scheme="https://www.jrlee.cntags/%E4%B8%8A%E4%B8%8B%E6%96%87/"/>
     
   </entry>
   
   <entry>
     <title>Go语言定时器的使用</title>
-    <link href="http://example.com/p/df47ea8c.html"/>
-    <id>http://example.com/p/df47ea8c.html</id>
+    <link href="https://www.jrlee.cnp/df47ea8c.html"/>
+    <id>https://www.jrlee.cnp/df47ea8c.html</id>
     <published>2024-08-18T07:46:04.000Z</published>
     <updated>2024-10-15T09:27:38.262Z</updated>
     
@@ -321,21 +338,21 @@
     
     
     
-    <category term="Go语言" scheme="http://example.com/categories/Go%E8%AF%AD%E8%A8%80/"/>
+    <category term="Go语言" scheme="https://www.jrlee.cncategories/Go%E8%AF%AD%E8%A8%80/"/>
     
     
-    <category term="Go语言" scheme="http://example.com/tags/Go%E8%AF%AD%E8%A8%80/"/>
+    <category term="Go语言" scheme="https://www.jrlee.cntags/Go%E8%AF%AD%E8%A8%80/"/>
     
-    <category term="Golang进阶" scheme="http://example.com/tags/Golang%E8%BF%9B%E9%98%B6/"/>
+    <category term="Golang进阶" scheme="https://www.jrlee.cntags/Golang%E8%BF%9B%E9%98%B6/"/>
     
-    <category term="定时任务" scheme="http://example.com/tags/%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/"/>
+    <category term="定时任务" scheme="https://www.jrlee.cntags/%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/"/>
     
   </entry>
   
   <entry>
     <title>Go语言反射</title>
-    <link href="http://example.com/p/17939c02.html"/>
-    <id>http://example.com/p/17939c02.html</id>
+    <link href="https://www.jrlee.cnp/17939c02.html"/>
+    <id>https://www.jrlee.cnp/17939c02.html</id>
     <published>2024-08-15T11:55:39.000Z</published>
     <updated>2024-10-15T09:27:38.260Z</updated>
     
@@ -346,21 +363,21 @@
     
     
     
-    <category term="Go语言" scheme="http://example.com/categories/Go%E8%AF%AD%E8%A8%80/"/>
+    <category term="Go语言" scheme="https://www.jrlee.cncategories/Go%E8%AF%AD%E8%A8%80/"/>
     
     
-    <category term="Go语言" scheme="http://example.com/tags/Go%E8%AF%AD%E8%A8%80/"/>
+    <category term="Go语言" scheme="https://www.jrlee.cntags/Go%E8%AF%AD%E8%A8%80/"/>
     
-    <category term="Golang进阶" scheme="http://example.com/tags/Golang%E8%BF%9B%E9%98%B6/"/>
+    <category term="Golang进阶" scheme="https://www.jrlee.cntags/Golang%E8%BF%9B%E9%98%B6/"/>
     
-    <category term="反射" scheme="http://example.com/tags/%E5%8F%8D%E5%B0%84/"/>
+    <category term="反射" scheme="https://www.jrlee.cntags/%E5%8F%8D%E5%B0%84/"/>
     
   </entry>
   
   <entry>
     <title>Go语言单元测试详解</title>
-    <link href="http://example.com/p/43abdc4.html"/>
-    <id>http://example.com/p/43abdc4.html</id>
+    <link href="https://www.jrlee.cnp/43abdc4.html"/>
+    <id>https://www.jrlee.cnp/43abdc4.html</id>
     <published>2024-08-09T11:58:20.000Z</published>
     <updated>2024-10-15T09:27:38.259Z</updated>
     
@@ -371,12 +388,12 @@
     
     
     
-    <category term="Go语言" scheme="http://example.com/categories/Go%E8%AF%AD%E8%A8%80/"/>
+    <category term="Go语言" scheme="https://www.jrlee.cncategories/Go%E8%AF%AD%E8%A8%80/"/>
     
     
-    <category term="Go语言" scheme="http://example.com/tags/Go%E8%AF%AD%E8%A8%80/"/>
+    <category term="Go语言" scheme="https://www.jrlee.cntags/Go%E8%AF%AD%E8%A8%80/"/>
     
-    <category term="单元测试" scheme="http://example.com/tags/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/"/>
+    <category term="单元测试" scheme="https://www.jrlee.cntags/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/"/>
     
   </entry>
   
