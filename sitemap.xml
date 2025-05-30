@@ -4,7 +4,16 @@
   <url>
     <loc>http://example.com/golang/index.html</loc>
     
-    <lastmod>2024-11-15</lastmod>
+    <lastmod>2025-05-30</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://example.com/p/597e0f10.html</loc>
+    
+    <lastmod>2025-05-30</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -260,14 +269,14 @@
   </url>
   
   <url>
-    <loc>http://example.com/tags/Golang%E5%85%A5%E9%97%A8/</loc>
+    <loc>http://example.com/tags/%E6%97%B6%E9%97%B4%E6%A0%BC%E5%BC%8F%E5%8C%96/</loc>
     <lastmod>2025-05-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://example.com/tags/%E6%97%B6%E9%97%B4%E6%A0%BC%E5%BC%8F%E5%8C%96/</loc>
+    <loc>http://example.com/tags/Golang%E5%85%A5%E9%97%A8/</loc>
     <lastmod>2025-05-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
