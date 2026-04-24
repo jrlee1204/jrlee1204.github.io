@@ -1,1 +1,211 @@
-hello
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome</title>
+  <style>
+    :root {
+      --bg: #120b1f;
+      --bg-deep: #090511;
+      --panel: #22143b;
+      --pixel-a: #ffde59;
+      --pixel-b: #ff6b6b;
+      --pixel-c: #67e8f9;
+      --pixel-d: #9bff8a;
+      --text: #fff9e8;
+      --shadow: #000000;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      font-family: "Courier New", monospace;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 30%),
+        radial-gradient(circle at top, #2d1a4d 0%, var(--bg) 45%, var(--bg-deep) 100%);
+      color: var(--text);
+      image-rendering: pixelated;
+      overflow: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+      background-size: 28px 28px;
+      opacity: 0.18;
+      pointer-events: none;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        linear-gradient(transparent 0%, rgba(0, 0, 0, 0.2) 50%, transparent 100%);
+      background-size: 100% 6px;
+      opacity: 0.2;
+      mix-blend-mode: multiply;
+      pointer-events: none;
+    }
+
+    .wrap {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+
+    .card {
+      position: relative;
+      width: min(760px, 100%);
+      padding: 40px 24px;
+      background: var(--panel);
+      border: 6px solid var(--shadow);
+      box-shadow:
+        0 0 0 6px #4b2b78,
+        0 0 0 12px #12081f,
+        0 18px 0 rgba(0, 0, 0, 0.35);
+      text-align: center;
+    }
+
+    .card::before,
+    .card::after {
+      content: "";
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      background: var(--pixel-a);
+      box-shadow: 4px 4px 0 var(--shadow);
+    }
+
+    .card::before {
+      top: -12px;
+      left: -12px;
+    }
+
+    .card::after {
+      right: -12px;
+      bottom: -12px;
+      background: var(--pixel-c);
+    }
+
+    .label {
+      display: inline-block;
+      padding: 8px 12px;
+      margin-bottom: 18px;
+      font-size: 12px;
+      letter-spacing: 3px;
+      color: #1b102f;
+      background: var(--pixel-a);
+      border: 4px solid var(--shadow);
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(46px, 10vw, 96px);
+      line-height: 0.95;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      text-shadow:
+        4px 4px 0 var(--shadow),
+        8px 8px 0 #4b2b78,
+        0 0 20px rgba(255, 222, 89, 0.25);
+    }
+
+    .welcome {
+      color: var(--pixel-a);
+    }
+
+    .cn {
+      margin-top: 18px;
+      font-size: clamp(22px, 4vw, 34px);
+      letter-spacing: 6px;
+      color: var(--pixel-c);
+      text-shadow: 3px 3px 0 var(--shadow);
+    }
+
+    .sub {
+      margin: 22px auto 0;
+      max-width: 520px;
+      font-size: clamp(14px, 2vw, 18px);
+      line-height: 1.8;
+      color: #f7d8ff;
+      text-shadow: 2px 2px 0 var(--shadow);
+    }
+
+    .pixels {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 28px;
+      flex-wrap: wrap;
+    }
+
+    .pixel {
+      width: 16px;
+      height: 16px;
+      border: 3px solid var(--shadow);
+      box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.35);
+      animation: float 1.6s steps(2) infinite;
+    }
+
+    .pixel:nth-child(1) { background: var(--pixel-a); }
+    .pixel:nth-child(2) { background: var(--pixel-b); animation-delay: 0.2s; }
+    .pixel:nth-child(3) { background: var(--pixel-c); animation-delay: 0.4s; }
+    .pixel:nth-child(4) { background: var(--pixel-d); animation-delay: 0.6s; }
+    .pixel:nth-child(5) { background: #c084fc; animation-delay: 0.8s; }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-6px);
+      }
+    }
+
+    @media (max-width: 520px) {
+      .card {
+        padding: 32px 18px;
+      }
+
+      .label {
+        letter-spacing: 2px;
+        font-size: 11px;
+      }
+
+      .cn {
+        letter-spacing: 4px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="card" aria-label="欢迎页面">
+      <div class="label">Pixel Style Landing</div>
+      <h1><span class="welcome">Welcome</span></h1>
+      <div class="cn">欢迎来到这里</div>
+      <p class="sub">HELLO PLAYER_01<br />愿你今天也有满格能量，开启新的冒险。</p>
+      <div class="pixels" aria-hidden="true">
+        <span class="pixel"></span>
+        <span class="pixel"></span>
+        <span class="pixel"></span>
+        <span class="pixel"></span>
+        <span class="pixel"></span>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
